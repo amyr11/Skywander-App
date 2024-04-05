@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "487807853291",
+    "project_id": "skywander-2xx52",
+    "storage_bucket": "skywander-2xx52.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487807853291:android:8631eb5f8bdda2f1f154ae",
+        "android_client_info": {
+          "package_name": "com.example.skywander_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "487807853291-i3764m3ilr2pbg0lodg9alhvbh01rktt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHQSQOxO-oI3g2GMc0n_Q1YJrGYsIAQ1E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "487807853291-i3764m3ilr2pbg0lodg9alhvbh01rktt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "487807853291-67gors701jib2ro161vpqaq3k6f7nesp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.skywanderApp.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
