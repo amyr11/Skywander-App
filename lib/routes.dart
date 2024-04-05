@@ -3,7 +3,6 @@ import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skywander_app/constants.dart';
-import 'package:skywander_app/styles.dart';
 
 /*
 This file contains all the routes used in the app. You can add more routes here and delete the /sample route.
