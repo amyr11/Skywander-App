@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class OnboardingScreen extends StatelessWidget {
-  const OnboardingScreen({super.key});
+class TourFilterScreen extends StatelessWidget {
+  const TourFilterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
