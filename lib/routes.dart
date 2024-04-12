@@ -1,9 +1,12 @@
+//import 'dart:js';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart' as firebase_ui_auth;
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skywander_app/constants.dart';
+import 'package:skywander_app/screens/settings/settings.dart';
 
 /*
 This file contains all the routes used in the app. You can add more routes here and delete the /sample route.
@@ -13,9 +16,9 @@ This file contains all the routes used in the app. You can add more routes here 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
-      path: '/',
-      redirect: (context, state) => FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/profile',
-    ),
+        path: '/',
+        //redirect: (context, state) => FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/profile',
+        redirect: (context, state) => '/settings-change-details'),
     GoRoute(
       path: '/sign-in',
       builder: (context, state) => firebase_ui_auth.SignInScreen(
@@ -24,7 +27,8 @@ final GoRouter router = GoRouter(
           GoogleProvider(clientId: GOOGLE_CLIENT_ID),
         ],
         actions: [
-          firebase_ui_auth.AuthStateChangeAction<firebase_ui_auth.SignedIn>((context, _) {
+          firebase_ui_auth.AuthStateChangeAction<firebase_ui_auth.SignedIn>(
+              (context, _) {
             GoRouter.of(context).pushReplacement("/profile");
           }),
         ],
@@ -50,5 +54,9 @@ final GoRouter router = GoRouter(
                 }),
               ],
             )),
+    GoRoute(
+      path: '/settings-change-details',
+      builder: (context, state) => SettingsScreen(),
+    ),
   ],
 );
