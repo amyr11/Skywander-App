@@ -6,6 +6,7 @@ import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skywander_app/constants.dart';
+import 'package:skywander_app/screens/settings/change_details.dart';
 import 'package:skywander_app/screens/settings/settings.dart';
 
 /*
@@ -56,7 +57,7 @@ final GoRouter router = GoRouter(
             )),
     GoRoute(
       path: '/settings-change-details',
-      builder: (context, state) => SettingsScreen(),
+      builder: (context, state) => const ChangeDetailsScreen(),
     ),
   ],
 );
