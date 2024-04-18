@@ -7,6 +7,13 @@ This file contains all the styles and themes used in the app.
 // Colors
 Color kPrimaryColor = const Color(0x00AE9F84);
 
+Color kNeutral22 = const Color(0xFF36343B);
+Color kNeutralVariant95 = const Color(0xFFEAEAEA);
+
+Color kLightPrimaryContainer = const Color(0xFFD6CDBC);
+
+Color kLightOnPrimaryContainer = const Color(0xFF796F5C);
+
 // Fonts
 TextStyle k28BoldPrimaryColor = TextStyle(
   fontSize: 28,
