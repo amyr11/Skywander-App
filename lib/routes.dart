@@ -4,6 +4,8 @@ import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skywander_app/constants.dart';
+import 'package:skywander_app/screens/home/home.dart';
+import 'package:skywander_app/screens/onboarding.dart';
 import 'package:skywander_app/screens/home/tours_in_country.dart';
 
 /*
@@ -15,6 +17,7 @@ final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
       path: '/',
+        redirect: (context, state) => FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/onboarding',
       redirect: (context, state) =>
           FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/profile',
     ),
@@ -26,6 +29,8 @@ final GoRouter router = GoRouter(
           GoogleProvider(clientId: GOOGLE_CLIENT_ID),
         ],
         actions: [
+          firebase_ui_auth.AuthStateChangeAction<firebase_ui_auth.SignedIn>((context, _) {
+            GoRouter.of(context).pushReplacement("/onboarding");
           firebase_ui_auth.AuthStateChangeAction<firebase_ui_auth.SignedIn>(
               (context, _) {
             GoRouter.of(context).pushReplacement("/profile");
@@ -53,6 +58,14 @@ final GoRouter router = GoRouter(
                 }),
               ],
             )),
+    GoRoute(
+      path: '/onboarding',
+      builder: (context, state) => const OnboardingScreen(),
+    ),
+    GoRoute(
+      path: '/home',
+      builder: (context, state) => const HomeScreen(),
+    ),
     GoRoute(
         path: '/tour-tab-tours-in-country',
         builder: (context, state) => ToursInCountryScreen()),
