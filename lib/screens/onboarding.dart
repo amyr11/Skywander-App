@@ -105,7 +105,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             )
           : ElevatedButton(
               onPressed: () {
-                GoRouter.of(context).push('/home');
+                GoRouter.of(context).pushReplacement('/app');
               },
               style: ButtonStyle(
                   backgroundColor:
