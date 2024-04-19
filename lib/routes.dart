@@ -17,7 +17,6 @@ final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
       path: '/',
-        redirect: (context, state) => FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/onboarding',
       redirect: (context, state) =>
           FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/profile',
     ),
@@ -29,8 +28,6 @@ final GoRouter router = GoRouter(
           GoogleProvider(clientId: GOOGLE_CLIENT_ID),
         ],
         actions: [
-          firebase_ui_auth.AuthStateChangeAction<firebase_ui_auth.SignedIn>((context, _) {
-            GoRouter.of(context).pushReplacement("/onboarding");
           firebase_ui_auth.AuthStateChangeAction<firebase_ui_auth.SignedIn>(
               (context, _) {
             GoRouter.of(context).pushReplacement("/profile");
