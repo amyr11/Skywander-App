@@ -7,7 +7,28 @@ This file contains all the styles and themes used in the app.
 // Colors
 Color kPrimaryColor = const Color(0x00AE9F84);
 
+Color kNeutral22 = const Color(0xFF36343B);
+Color kNeutralVariant95 = const Color(0xFFEAEAEA);
+
+Color kLightPrimaryContainer = const Color(0xFFD6CDBC);
+
+Color kLightOnPrimaryContainer = const Color(0xFF796F5C);
+
 // Fonts
+TextStyle kLabelLarge = const TextStyle(
+  fontWeight: FontWeight.bold,
+  fontSize: 18,
+);
+
+TextStyle kLabelSmallSecondary = TextStyle(
+  color: kTheme.colorScheme.secondary,
+);
+
+TextStyle kLabelExtraSmallSecondary = TextStyle(
+  color: kTheme.colorScheme.secondary,
+  fontSize: 10,
+);
+
 TextStyle k28BoldPrimaryColor = TextStyle(
   fontSize: 28,
   fontWeight: FontWeight.bold,
@@ -27,7 +48,8 @@ TextStyle k16RegularWhite = const TextStyle(
 );
 
 // Metrics
-double kDefaultSpace = 10.0;
+double kDefaultSpace = 16.0;
+double kContainerBorderRadius = 10.0;
 
 // Theme
 bool kIsDarkTheme = false;
