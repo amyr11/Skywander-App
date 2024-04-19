@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skywander_app/styles.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -17,12 +18,12 @@ class HomeScreen extends StatelessWidget {
     String name = 'John';
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      padding: EdgeInsets.symmetric(vertical: kDefaultSpace),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 16.0),
+            padding: EdgeInsets.only(left: kDefaultSpace),
             child: CircleAvatar(
               radius: 24,
             ),
@@ -35,16 +36,11 @@ class HomeScreen extends StatelessWidget {
             children: [
               Text(
                 'Welcome back,',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
+                style: kLabelSmallSecondary,
               ),
               Text(
                 name,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
+                style: kLabelLarge,
               ),
             ],
           ),

@@ -6,6 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:skywander_app/constants.dart';
 import 'package:skywander_app/screens/app.dart';
 import 'package:skywander_app/screens/onboarding.dart';
+import 'package:skywander_app/screens/payments/select_mode_of_payment.dart';
+import 'package:skywander_app/screens/settings/change_details.dart';
+import 'package:skywander_app/screens/settings/change_password.dart';
+import 'package:skywander_app/screens/settings/faq.dart';
 import 'package:skywander_app/screens/settings/settings.dart';
 
 /*
@@ -17,7 +21,9 @@ final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
       path: '/',
-        redirect: (context, state) => FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/onboarding',
+      redirect: (context, state) => FirebaseAuth.instance.currentUser == null
+          ? '/sign-in'
+          : '/onboarding',
     ),
     GoRoute(
       path: '/sign-in',
@@ -27,7 +33,8 @@ final GoRouter router = GoRouter(
           GoogleProvider(clientId: GOOGLE_CLIENT_ID),
         ],
         actions: [
-          firebase_ui_auth.AuthStateChangeAction<firebase_ui_auth.SignedIn>((context, _) {
+          firebase_ui_auth.AuthStateChangeAction<firebase_ui_auth.SignedIn>(
+              (context, _) {
             GoRouter.of(context).pushReplacement("/onboarding");
           }),
         ],
@@ -55,6 +62,22 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/settings',
       builder: (context, state) => const SettingsScreen(),
-    )
+    ),
+    GoRoute(
+      path: '/settings/change-password',
+      builder: (context, state) => const ChangePasswordScreen(),
+    ),
+    GoRoute(
+      path: '/settings/change-details',
+      builder: (context, state) => const ChangeDetailsScreen(),
+    ),
+    GoRoute(
+      path: '/settings/select-payment',
+      builder: (context, state) => const SelectModeOfPaymentScreen(),
+    ),
+    GoRoute(
+      path: '/settings/faq',
+      builder: (context, state) => const FAQScreen(),
+    ),
   ],
 );

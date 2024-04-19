@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skywander_app/styles.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -9,158 +13,88 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  double _xPositionOrange = 0;
-  double _yPositionOrange = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: _buildAppBar(),
       backgroundColor: kNeutralVariant95,
-      body: SingleChildScrollView(
-        child: Stack(
+      body: _buildBody(context),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: kDefaultSpace),
+        child: Column(
           children: [
-            Positioned(
-              left: _xPositionOrange,
-              top: _yPositionOrange,
-              child: GestureDetector(
-                onPanUpdate: (details) {
-                  setState(() {
-                    _xPositionOrange += details.delta.dx;
-                    _yPositionOrange += details.delta.dy;
-                  });
-                },
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 130,
-                  color: kLightPrimaryContainer,
-                ),
+            _buildProfileContainer(context),
+            SizedBox(height: kDefaultSpace),
+            _buildSection(
+              title: 'ACCOUNT',
+              child: _buildButtonsContainer(
+                children: [
+                  _buildButtonRow(
+                    onTap: () =>
+                        GoRouter.of(context).push('/settings/change-password'),
+                    context: context,
+                    iconData: Icons.lock_outline,
+                    title: 'Change password',
+                  ),
+                  _buildButtonRow(
+                    onTap: () =>
+                        GoRouter.of(context).push('/settings/change-details'),
+                    context: context,
+                    iconData: Icons.person_outline,
+                    title: 'Update my details',
+                  ),
+                ],
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+            SizedBox(height: kDefaultSpace),
+            _buildSection(
+              title: 'SYSTEM',
+              child: _buildButtonsContainer(
+                children: [
+                  _buildButtonRow(
+                    onTap: () =>
+                        GoRouter.of(context).push('/settings/select-payment'),
+                    context: context,
+                    iconData: Icons.account_balance_wallet_outlined,
+                    title: 'Change payment methods',
+                  ),
+                  _buildButtonRow(
+                    onTap: () => GoRouter.of(context).push('/settings/faq'),
+                    context: context,
+                    iconData: Icons.help_outline,
+                    title: 'FAQs',
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: kDefaultSpace),
+            _buildButtonsContainer(
+              hasColor: false,
               children: [
-                const SizedBox(height: 0),
-                const SizedBox(height: 90),
-                const SizedBox(height: 10),
-                Container(
-                  padding: const EdgeInsets.all(30),
-                  margin: const EdgeInsets.only(left: 30, right: 30, top: 0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 20),
-                        child: Text(
-                          'Sky W. Ander',
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onBackground),
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        'Traveler',
-                        style: TextStyle(fontSize: 11, color: Theme.of(context).colorScheme.onBackground),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        'Fueled by love and passion for traveling!',
-                        style: TextStyle(fontSize: 11, color: Theme.of(context).colorScheme.onBackground),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                  child: Text(
-                    'ACCOUNT SETTINGS',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Lato',
-                      color: kNeutral22,
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildButtonRow(
-                        icon: Icons.lock,
-                        title: 'Change Password',
-                        onPressed: () {},
-                      ),
-                      const SizedBox(height: 0),
-                      _buildButtonRow(
-                        icon: Icons.person,
-                        title: 'Update My Details',
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                  child: Text(
-                    'SYSTEM SETTINGS',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Lato',
-                      color: kNeutral22,
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildButtonRow(
-                        icon: Icons.payment,
-                        title: 'Change Payment Method',
-                        onPressed: () {},
-                      ),
-                      const SizedBox(height: 0),
-                      _buildButtonRow(
-                        icon: Icons.help,
-                        title: 'FAQS',
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ),
                 _buildButtonRow(
-                  icon: Icons.logout,
-                  title: 'Log Out',
-                  onPressed: () {
-                    // Implement log out functionality here
+                  onTap: () {
+                    FirebaseUIAuth.signOut(
+                      context: context,
+                      auth: FirebaseAuth.instance,
+                    );
+                    GoRouter.of(context).go('/sign-in');
                   },
-                  iconColor: kLightOnPrimaryContainer,
-                  labelColor: Theme.of(context).colorScheme.onSurface,
+                  context: context,
+                  iconData: Icons.exit_to_app_outlined,
+                  showTrailing: false,
+                  title: 'Sign out',
                 ),
               ],
             ),
-            Positioned(
-              left: (MediaQuery.of(context).size.width - 68) / 2,
-              top: 64,
-              child: const CircleAvatar(
-                radius: 34,
-                backgroundImage: AssetImage('assets/images/profile.jpg'),
-              ),
+            SizedBox(height: kDefaultSpace),
+            Text(
+              'Made with ❤️ by App Dharma Down',
+              style: kLabelExtraSmallSecondary,
             ),
           ],
         ),
@@ -168,49 +102,138 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildButtonRow({required IconData icon, required String title, required VoidCallback onPressed, Color? iconColor, Color? labelColor}) {
+  Column _buildSection({required String title, required Widget child}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.all(kDefaultSpace),
+          child: Text(title),
+        ),
+        child,
+      ],
+    );
+  }
+
+  Widget _buildButtonsContainer({
+    required List<Widget> children,
+    bool hasColor = true,
+  }) {
     return Padding(
-      padding: title != 'Log Out' ? const EdgeInsets.only(bottom: 10) : const EdgeInsets.only(bottom: 10, left: 70), // Add additional padding for "Log Out" button
-      child: title != 'Log Out' ? ElevatedButton.icon(
-        onPressed: onPressed,
-        icon: Icon(icon, color: kLightOnPrimaryContainer),
-        label: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                color: labelColor ?? Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
-            ),
-            const Icon(Icons.chevron_right),
-          ],
+      padding: EdgeInsets.symmetric(horizontal: kDefaultSpace),
+      child: Material(
+        color: !hasColor ? Colors.transparent : null,
+        clipBehavior: Clip.antiAlias,
+        borderRadius: BorderRadius.circular(kContainerBorderRadius),
+        child: Column(
+          children: children,
         ),
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Theme.of(context).colorScheme.primary,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
-          ),
-        ),
-      ) : GestureDetector(
-        onTap: onPressed,
+      ),
+    );
+  }
+
+  Widget _buildButtonRow({
+    required BuildContext context,
+    required IconData iconData,
+    required String title,
+    required Function() onTap,
+    bool showTrailing = true,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: EdgeInsets.all(kDefaultSpace),
         child: Row(
           children: [
-            Icon(icon, color: iconColor ?? Theme.of(context).colorScheme.onPrimaryContainer),
-            const SizedBox(width: 12),
+            Icon(
+              iconData,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            SizedBox(width: kDefaultSpace),
             Text(
               title,
               style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
+                color: Theme.of(context).primaryColor,
+                fontSize: 16,
               ),
             ),
+            const Spacer(),
+            showTrailing
+                ? Icon(
+                    Icons.chevron_right,
+                    color: Theme.of(context).colorScheme.primary,
+                  )
+                : Container(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildProfileContainer(BuildContext context) {
+    User user = FirebaseAuth.instance.currentUser!;
+    String imageUrl = user.photoURL ?? 'https://placehold.co/96x96';
+    ImageProvider image = NetworkImage(imageUrl);
+    String name = user.displayName ?? 'Unknown User';
+    DateTime dateJoined = user.metadata.creationTime!;
+    List<String> quotes = [
+      'Fueled by love and passion for travelling',
+      'Travel is the only thing you buy that makes you richer',
+      'Travel far enough, you meet yourself',
+    ];
+    String quote = quotes[DateTime.now().day % quotes.length];
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: kDefaultSpace),
+      child: Stack(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 48.0),
+            padding: EdgeInsets.fromLTRB(
+                kDefaultSpace, 64.0, kDefaultSpace, kDefaultSpace),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(kContainerBorderRadius),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  name,
+                  textAlign: TextAlign.center,
+                  style: kLabelLarge,
+                ),
+                Text(
+                  'Joined in ${dateJoined.year}',
+                  textAlign: TextAlign.center,
+                  style: kLabelSmallSecondary,
+                ),
+                SizedBox(height: kDefaultSpace),
+                Text(
+                  quote,
+                  textAlign: TextAlign.center,
+                  style: kLabelSmallSecondary.copyWith(
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: CircleAvatar(
+              backgroundImage: image,
+              radius: 48,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: const Text('Settings'),
     );
   }
 }
