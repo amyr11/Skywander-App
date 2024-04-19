@@ -23,7 +23,7 @@ class User {
     );
   }
 
-  Map<String, String?> toJSON() {
+  Map<String, String?> toJson() {
     return {
       'id': id,
       'firstName': firstName,
