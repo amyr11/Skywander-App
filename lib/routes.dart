@@ -4,7 +4,7 @@ import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skywander_app/constants.dart';
-import 'package:skywander_app/screens/home/home.dart';
+import 'package:skywander_app/screens/app.dart';
 import 'package:skywander_app/screens/onboarding.dart';
 
 /*
@@ -44,21 +44,12 @@ final GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-        path: '/profile',
-        builder: (context, state) => firebase_ui_auth.ProfileScreen(
-              actions: [
-                firebase_ui_auth.SignedOutAction((context) {
-                  GoRouter.of(context).pushReplacement("/");
-                }),
-              ],
-            )),
-    GoRoute(
       path: '/onboarding',
       builder: (context, state) => const OnboardingScreen(),
     ),
     GoRoute(
-      path: '/home',
-      builder: (context, state) => const HomeScreen(),
+      path: '/app',
+      builder: (context, state) => const AppLayout(),
     ),
   ],
 );
