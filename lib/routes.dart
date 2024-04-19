@@ -4,6 +4,7 @@ import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skywander_app/constants.dart';
+import 'package:skywander_app/screens/home/tours_in_country.dart';
 
 /*
 This file contains all the routes used in the app. You can add more routes here and delete the /sample route.
@@ -14,7 +15,8 @@ final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
       path: '/',
-      redirect: (context, state) => FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/profile',
+      redirect: (context, state) =>
+          FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/profile',
     ),
     GoRoute(
       path: '/sign-in',
@@ -24,7 +26,8 @@ final GoRouter router = GoRouter(
           GoogleProvider(clientId: GOOGLE_CLIENT_ID),
         ],
         actions: [
-          firebase_ui_auth.AuthStateChangeAction<firebase_ui_auth.SignedIn>((context, _) {
+          firebase_ui_auth.AuthStateChangeAction<firebase_ui_auth.SignedIn>(
+              (context, _) {
             GoRouter.of(context).pushReplacement("/profile");
           }),
         ],
@@ -50,5 +53,8 @@ final GoRouter router = GoRouter(
                 }),
               ],
             )),
+    GoRoute(
+        path: '/tour-tab-tours-in-country',
+        builder: (context, state) => ToursInCountryScreen()),
   ],
 );
