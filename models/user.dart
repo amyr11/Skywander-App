@@ -5,13 +5,12 @@ class User {
   final String firstName, middleName, lastName, contactNumber;
   final bool isOnboarded = false;
 
-  User({
-    this.id,
-    required this.firstName,
-    required this.middleName,
-    required this.lastName,
-    required this.contactNumber
-  });
+  User(
+      {this.id,
+      required this.firstName,
+      required this.middleName,
+      required this.lastName,
+      required this.contactNumber});
 
   factory User.fromFirestore(DocumentSnapshot doc) {
     return User(
