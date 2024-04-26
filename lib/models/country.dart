@@ -7,7 +7,7 @@ class Country {
   Country({
     required this.countryName,
     required this.countryImageUrl,
-    });
+  });
 
   factory Country.fromFirestore(DocumentSnapshot doc) {
     return Country(

@@ -5,10 +5,10 @@ import 'package:skywander_app/models/tour.dart';
 import 'package:skywander_app/models/user.dart';
 
 class TourTransaction {
-
   final User user;
   final Tour tour;
-  final String status; //di ko na inenum since galing naman sa db. controlled naman ata natin mga pwede nilang iinput here? -romeo
+  final String
+      status; //di ko na inenum since galing naman sa db. controlled naman ata natin mga pwede nilang iinput here? -romeo
   final DateTime startDate;
   final DateTime endDate;
   final Map<int, int> headcount; //di ko sure to? sinunod ko lang nasa dd -romeo
@@ -16,21 +16,19 @@ class TourTransaction {
   final double totalFee;
   final PaymentMethod paymentMethod;
   final bool paid;
-  
 
-  TourTransaction(
-      {
-        required this.user,
-        required this.tour,
-        required this.status,
-        required this.startDate,
-        required this.endDate,
-        required this.headcount,
-        required this.tickets,
-        required this.totalFee,
-        required this.paymentMethod,
-        required this.paid,
-        });
+  TourTransaction({
+    required this.user,
+    required this.tour,
+    required this.status,
+    required this.startDate,
+    required this.endDate,
+    required this.headcount,
+    required this.tickets,
+    required this.totalFee,
+    required this.paymentMethod,
+    required this.paid,
+  });
 
   factory TourTransaction.fromFirestore(DocumentSnapshot doc) {
     return TourTransaction(

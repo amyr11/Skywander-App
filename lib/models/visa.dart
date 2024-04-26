@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:skywander_app/models/country.dart';
 
-class Visa{
+class Visa {
   final Country country;
   final List<dynamic> requirements; // - sinunod ko nalang si gelo
 
-  Visa({
-    required this.country, 
-    required this.requirements});
+  Visa({required this.country, required this.requirements});
 
   factory Visa.fromFirestore(DocumentSnapshot doc) {
     return Visa(

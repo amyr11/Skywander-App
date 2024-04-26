@@ -4,9 +4,7 @@ class FAQ {
   final String question;
   final String answer;
 
-  FAQ({
-    required this.question, 
-    required this.answer});
+  FAQ({required this.question, required this.answer});
 
   factory FAQ.fromFirestore(DocumentSnapshot doc) {
     return FAQ(
