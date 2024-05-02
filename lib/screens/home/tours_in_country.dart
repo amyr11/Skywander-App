@@ -15,7 +15,7 @@ class ToursInCountryScreen extends StatelessWidget {
           child: Padding(
         padding: const EdgeInsets.all(22),
         child: ListView.builder(
-          itemCount: 3,
+          itemCount: 4,
           itemBuilder: (BuildContext context, int index) {
             return const tourCardWide(
                 image: 'assets/images/korea_pic.png',
