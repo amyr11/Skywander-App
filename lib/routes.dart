@@ -13,6 +13,7 @@ import 'package:skywander_app/screens/settings/change_details.dart';
 import 'package:skywander_app/screens/settings/change_password.dart';
 import 'package:skywander_app/screens/settings/faq.dart';
 import 'package:skywander_app/screens/settings/settings.dart';
+import 'package:skywander_app/screens/home/tours_in_country.dart';
 
 /*
 This file contains all the routes used in the app. You can add more routes here and delete the /sample route.
@@ -83,8 +84,7 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const FAQScreen(),
     ),
     GoRoute(
-      path: '/tour-tab-country',
-      builder: (context, state) => const
-    )
+        path: '/tour-tab-tours-in-country',
+        builder: (context, state) => ToursInCountryScreen()),
   ],
 );
