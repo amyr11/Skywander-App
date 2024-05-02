@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart' as firebase_ui_auth;
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
@@ -20,10 +22,11 @@ This file contains all the routes used in the app. You can add more routes here 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
-      path: '/',
-      redirect: (context, state) => FirebaseAuth.instance.currentUser == null
-          ? '/sign-in'
-          : '/onboarding',
+      // path: '/',
+      // redirect: (context, state) => FirebaseAuth.instance.currentUser == null
+      //     ? '/sign-in'
+      //     : '/onboarding',
+        redirect: (context, state) =>
     ),
     GoRoute(
       path: '/sign-in',
@@ -79,5 +82,9 @@ final GoRouter router = GoRouter(
       path: '/settings/faq',
       builder: (context, state) => const FAQScreen(),
     ),
+    GoRoute(
+      path: '/tour-tab-country',
+      builder: (context, state) => const
+    )
   ],
 );
