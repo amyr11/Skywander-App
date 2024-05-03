@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skywander_app/styles.dart';
 
-class tourCardWide extends StatelessWidget {
+class tourCardWide extends StatefulWidget {
   final String image;
   final String title;
   final String days;
@@ -9,11 +9,11 @@ class tourCardWide extends StatelessWidget {
   final String price;
   final IconData? star;
   final String? rate;
-  final bool isFavorite;
+  bool isFavorite;
   final bool isStarred;
   final double size;
 
-  const tourCardWide(
+  tourCardWide(
       {super.key,
       required this.image,
       required this.title,
@@ -27,6 +27,11 @@ class tourCardWide extends StatelessWidget {
       required this.size});
 
   @override
+  State<tourCardWide> createState() => _tourCardWideState();
+}
+
+class _tourCardWideState extends State<tourCardWide> {
+  @override
   Widget build(BuildContext context) {
     return Card(
       color: kPrimaryLight,
@@ -35,67 +40,81 @@ class tourCardWide extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            height: size,
+            height: widget.size,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(image),
+                image: AssetImage(widget.image),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          ListTile(
-            title: Text(title),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  days,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0xff6E6853),
-                  ),
-                ),
-                Row(
+          Stack(
+            children: [
+              ListTile(
+                title: Text(widget.title),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(
-                      Icons.location_on,
-                      size: 15,
-                      color: Colors.red,
+                    Text(
+                      widget.days,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Color(0xff6E6853),
+                      ),
                     ),
-                    Text(place,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xff6E6853),
-                        )),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          size: 15,
+                          color: Colors.red,
+                        ),
+                        Text(widget.place,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Color(0xff6E6853),
+                            )),
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
-            trailing: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Container(
-                  width: 106,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    color: Color(0xff6E6853),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      price,
-                      style: k14RegularWhite,
-                    ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 10, 0),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        width: 106,
+                        height: 30,
+                        decoration: const BoxDecoration(
+                          color: Color(0xff6E6853),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            widget.price,
+                            style: k14RegularWhite,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => setState(
+                            () => widget.isFavorite = !widget.isFavorite),
+                        icon: widget.isFavorite == true
+                            ? const Icon(Icons.favorite)
+                            : const Icon(Icons.favorite_border),
+                        color: Colors.red,
+                      ),
+                    ],
                   ),
                 ),
-                Icon(
-                  isFavorite == true ? Icons.favorite : Icons.favorite_border,
-                  color: Colors.red,
-                )
-              ],
-            ),
+              )
+            ],
           ),
         ],
       ),

@@ -18,7 +18,7 @@ class WishlistScreen extends StatelessWidget {
         child: ListView.builder(
           itemCount: 4,
           itemBuilder: (BuildContext context, int index) {
-            return const tourCardWide(
+            return tourCardWide(
                 image: 'assets/images/korea_pic.png',
                 title: 'Daebak Korea',
                 days: '5 days/3 nights',
