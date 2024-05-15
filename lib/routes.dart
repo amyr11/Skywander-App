@@ -1,12 +1,13 @@
-import 'dart:js';
-
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'dart:js';
+//
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart' as firebase_ui_auth;
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skywander_app/constants.dart';
 import 'package:skywander_app/screens/app.dart';
+import 'package:skywander_app/screens/home/tour_result.dart';
 import 'package:skywander_app/screens/onboarding.dart';
 import 'package:skywander_app/screens/payments/select_mode_of_payment.dart';
 import 'package:skywander_app/screens/settings/change_details.dart';
@@ -24,11 +25,11 @@ This file contains all the routes used in the app. You can add more routes here 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
-      path: '/',
-      redirect: (context, state) => FirebaseAuth.instance.currentUser == null
-          ? '/sign-in'
-          : '/onboarding',
-    ),
+        path: '/',
+        // redirect: (context, state) => FirebaseAuth.instance.currentUser == null
+        //     ? '/sign-in'
+        //     : '/onboarding',
+        redirect: (context, state) => '/tour-search-result'),
     GoRoute(
       path: '/sign-in',
       builder: (context, state) => firebase_ui_auth.SignInScreen(
@@ -88,5 +89,8 @@ final GoRouter router = GoRouter(
         builder: (context, state) => const ToursInCountryScreen()),
     GoRoute(
         path: '/wishlist', builder: (context, state) => const WishlistScreen()),
+    GoRoute(
+        path: '/tour-search-result',
+        builder: (context, state) => const TourResultScreen()),
   ],
 );

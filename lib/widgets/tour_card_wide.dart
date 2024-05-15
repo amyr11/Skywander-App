@@ -8,9 +8,9 @@ class tourCardWide extends StatefulWidget {
   final String place;
   final String price;
   final IconData? star;
-  final String? rate;
+  final double rate;
   bool isFavorite;
-  final bool isStarred;
+  bool isStarred;
   final double size;
 
   tourCardWide(
@@ -21,7 +21,7 @@ class tourCardWide extends StatefulWidget {
       required this.place,
       required this.price,
       this.star,
-      this.rate,
+      required this.rate,
       this.isFavorite = false,
       this.isStarred = false,
       required this.size});
@@ -39,15 +39,47 @@ class _tourCardWideState extends State<tourCardWide> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            height: widget.size,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(widget.image),
-                fit: BoxFit.cover,
+          Stack(children: [
+            Container(
+              height: widget.size,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(widget.image),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
+            Positioned(
+              bottom: 10,
+              left: 10,
+              child: Container(
+                width: 60,
+                height: 21,
+                decoration: const BoxDecoration(
+                  color: Color(0xff6E6853),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                child: IntrinsicWidth(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () {},
+                        child: widget.isStarred == true
+                            ? const Icon(Icons.star,
+                                size: 20, color: Colors.amberAccent)
+                            : const Icon(Icons.star_border,
+                                size: 20, color: Colors.amberAccent),
+                      ),
+                      Text(widget.rate.toString(), style: k14RegularWhite)
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ]),
           Stack(
             children: [
               ListTile(

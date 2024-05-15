@@ -24,6 +24,7 @@ class ToursInCountryScreen extends StatelessWidget {
                   days: '5 days/3 nights',
                   place: 'South Korea',
                   price: '₱ 10,000/pax',
+                  rate: 5.0,
                   size: 96);
             },
           ),
