@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart' as firebase_ui_auth;
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
@@ -11,6 +13,8 @@ import 'package:skywander_app/screens/settings/change_details.dart';
 import 'package:skywander_app/screens/settings/change_password.dart';
 import 'package:skywander_app/screens/settings/faq.dart';
 import 'package:skywander_app/screens/settings/settings.dart';
+import 'package:skywander_app/screens/home/tours_in_country.dart';
+import 'package:skywander_app/screens/wishlist/wishlist.dart';
 
 /*
 This file contains all the routes used in the app. You can add more routes here and delete the /sample route.
@@ -79,5 +83,10 @@ final GoRouter router = GoRouter(
       path: '/settings/faq',
       builder: (context, state) => const FAQScreen(),
     ),
+    GoRoute(
+        path: '/tour-tab-in-country',
+        builder: (context, state) => const ToursInCountryScreen()),
+    GoRoute(
+        path: '/wishlist', builder: (context, state) => const WishlistScreen()),
   ],
 );
