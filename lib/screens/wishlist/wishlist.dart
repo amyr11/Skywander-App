@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:skywander_app/styles.dart';
 import 'package:skywander_app/widgets/tour_card_wide.dart';
 
 class WishlistScreen extends StatelessWidget {
@@ -8,26 +10,31 @@ class WishlistScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 80,
         title: const Text('Wishlist'),
         centerTitle: true,
       ),
       body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.all(22),
         child: ListView.builder(
+          padding: EdgeInsets.all(kDefaultSpace),
           itemCount: 4,
           itemBuilder: (BuildContext context, int index) {
-            return tourCardWide(
-                image: 'assets/images/korea_pic.png',
-                title: 'Daebak Korea',
-                days: '5 days/3 nights',
-                place: 'South Korea',
-                price: '₱ 10,000/pax',
-                size: 96);
+            return TourCardWide(
+              rating: 4.5,
+              imageUrl: "https://placehold.co/600x400/png",
+              title: 'Daebak Korea',
+              subtitle: '5 days · 3 nights',
+              details: 'Experience the best of Korea in 5 days and 3 nights',
+              location: 'South Korea',
+              price: '₱ 10,000 / pax',
+              isFavorite: true,
+              onFavorite: () {},
+              onTap: () {
+                GoRouter.of(context).push('/tour-details');
+              },
+            );
           },
         ),
-      )),
+      ),
     );
   }
 }
