@@ -14,7 +14,7 @@ class TourTransaction {
   final Map<int, int> headcount; //di ko sure to? sinunod ko lang nasa dd -romeo
   final File tickets;
   final double totalFee;
-  final PaymentMethod paymentMethod;
+  final String paymentMethod;
   final bool paid;
 
   TourTransaction({
@@ -40,7 +40,7 @@ class TourTransaction {
       headcount: Map<int, int>.from(doc['headcount']),
       tickets: File(doc['tickets'] as String),
       totalFee: doc['totalFee'] as double,
-      paymentMethod: PaymentMethod.fromFirestore(doc['paymentMethod']),
+      paymentMethod: doc['payment_method'] as String,
       paid: doc['paid'] as bool,
     );
   }
@@ -55,7 +55,7 @@ class TourTransaction {
       'headcount': headcount,
       'tickets': tickets.path,
       'totalFee': totalFee,
-      'payment_method': paymentMethod.toJson(),
+      'payment_method': paymentMethod,
       'paid': paid,
     };
   }
