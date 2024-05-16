@@ -63,6 +63,9 @@ class _VisaScreenState extends State<VisaScreen> {
                 fillColor: Theme.of(context).colorScheme.surfaceContainer,
                 prefixIcon: const Icon(Icons.search),
                 hintText: 'Search for countries',
+                hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: getTheme().colorScheme.secondary,
+                    ),
                 filled: true,
                 contentPadding:
                     const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
