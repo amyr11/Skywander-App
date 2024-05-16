@@ -1,155 +1,161 @@
 import 'package:flutter/material.dart';
 import 'package:skywander_app/styles.dart';
+import 'package:skywander_app/widgets/rating_overlay.dart';
 
-class tourCardWide extends StatefulWidget {
-  final String image;
+class TourCardWide extends StatelessWidget {
   final String title;
-  final String days;
-  final String place;
+  final String subtitle;
+  final String details;
+  final String location;
   final String price;
-  final IconData? star;
-  final double rate;
-  bool isFavorite;
-  bool isStarred;
-  final double size;
+  final bool isFavorite;
+  final String imageUrl;
+  final double rating;
+  final VoidCallback onFavorite;
+  final VoidCallback onTap;
 
-  tourCardWide(
-      {super.key,
-      required this.image,
-      required this.title,
-      required this.days,
-      required this.place,
-      required this.price,
-      this.star,
-      required this.rate,
-      this.isFavorite = false,
-      this.isStarred = false,
-      required this.size});
+  const TourCardWide({
+    Key? key,
+    required this.title,
+    required this.subtitle,
+    required this.details,
+    required this.location,
+    required this.price,
+    required this.isFavorite,
+    required this.imageUrl,
+    required this.rating,
+    required this.onFavorite,
+    required this.onTap,
+  }) : super(key: key);
 
-  @override
-  State<tourCardWide> createState() => _tourCardWideState();
-}
-
-class _tourCardWideState extends State<tourCardWide> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: kPrimaryLight,
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Stack(children: [
-            Container(
-              height: widget.size,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(widget.image),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 10,
-              left: 10,
-              child: Container(
-                width: 60,
-                height: 21,
-                decoration: const BoxDecoration(
-                  color: Color(0xff6E6853),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
-                child: IntrinsicWidth(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: widget.isStarred == true
-                            ? const Icon(Icons.star,
-                                size: 20, color: Colors.amberAccent)
-                            : const Icon(Icons.star_border,
-                                size: 20, color: Colors.amberAccent),
-                      ),
-                      Text(widget.rate.toString(), style: k14RegularWhite)
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ]),
-          Stack(
-            children: [
-              ListTile(
-                title: Text(widget.title),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Card.outlined(
+          clipBehavior: Clip.antiAlias,
+          color: getTheme().colorScheme.surfaceContainer,
+          child: InkWell(
+            onTap: onTap,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Image with Rating Overlay
+                Stack(
                   children: [
-                    Text(
-                      widget.days,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Color(0xff6E6853),
-                      ),
+                    Image.network(
+                      imageUrl,
+                      width: constraints.maxWidth,
+                      height: constraints.maxWidth * 0.45,
+                      fit: BoxFit.cover,
                     ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on,
-                          size: 15,
-                          color: Colors.red,
-                        ),
-                        Text(widget.place,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Color(0xff6E6853),
-                            )),
-                      ],
+                    Positioned(
+                      bottom: 10,
+                      left: 10,
+                      child: RatingOverlay(rating: rating),
                     ),
                   ],
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 10, 0),
-                child: Align(
-                  alignment: Alignment.topRight,
+                // Info section
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        width: 106,
-                        height: 30,
-                        decoration: const BoxDecoration(
-                          color: Color(0xff6E6853),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          ),
+                      // Title
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 20,
                         ),
-                        child: Center(
-                          child: Text(
-                            widget.price,
-                            style: k14RegularWhite,
-                          ),
-                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      IconButton(
-                        onPressed: () => setState(
-                            () => widget.isFavorite = !widget.isFavorite),
-                        icon: widget.isFavorite == true
-                            ? const Icon(Icons.favorite)
-                            : const Icon(Icons.favorite_border),
-                        color: Colors.red,
+                      // Location
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            size: 16,
+                            color: getTheme().colorScheme.error,
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            location,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: getTheme().colorScheme.onPrimaryContainer,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                      // Details
+                      Text(
+                        details,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: getTheme().colorScheme.onPrimaryContainer,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 10),
+                      // Subtitle
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: getTheme().colorScheme.onPrimaryContainer,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 10),
+                      // Price and Favorite icon
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color:
+                                  getTheme().colorScheme.onPrimaryFixedVariant,
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: Text(
+                              price,
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: isFavorite
+                                  ? getTheme().colorScheme.error
+                                  : getTheme()
+                                      .colorScheme
+                                      .onPrimaryFixedVariant,
+                            ),
+                            onPressed: onFavorite,
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-              )
-            ],
+              ],
+            ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

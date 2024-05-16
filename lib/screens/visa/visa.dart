@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:skywander_app/styles.dart';
+import 'package:skywander_app/widgets/destination_card.dart';
 import 'package:skywander_app/widgets/visa_countries.dart';
 
 class VisaScreen extends StatefulWidget {
@@ -9,27 +12,33 @@ class VisaScreen extends StatefulWidget {
 }
 
 class _VisaScreenState extends State<VisaScreen> {
-  final List<Map<String, String>> countries = [
-    {'name': 'Australia', 'image': 'assets/images/australia.jpg'},
-    {'name': 'Canada', 'image': 'assets/images/canada.jpg'},
-    {'name': 'Japan', 'image': 'assets/images/japan.jpg'},
-    {'name': 'South Korea', 'image': 'assets/images/south_korea.jpg'},
-    {'name': 'China', 'image': 'assets/images/china.jpg'},
+  List<Map<String, String>> dummyMap = [
+    {
+      'destination': '🇯🇵 Japan',
+      'imageURL':
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNQXkHPjenNtb0rxeCdeb0uFdP1JqBGmFjFDtd3UVMQg&s'
+    },
+    {
+      'destination': '🇫🇷 Paris',
+      'imageURL':
+          'https://lp-cms-production.imgix.net/2021-05/shutterstockRF_1321418885.jpg?auto=format&fit=crop&ar=1:1&q=75&w=1200'
+    },
   ];
+
   List<Map<String, String>> filteredCountries = [];
   TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    filteredCountries = countries;
+    filteredCountries = dummyMap;
     searchController.addListener(_filterCountries);
   }
 
   void _filterCountries() {
     setState(() {
-      filteredCountries = countries
-          .where((country) => country['name']!
+      filteredCountries = dummyMap
+          .where((country) => country['destination']!
               .toLowerCase()
               .contains(searchController.text.toLowerCase()))
           .toList();
@@ -39,53 +48,52 @@ class _VisaScreenState extends State<VisaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search for places...',
-                  prefixIcon: Icon(Icons.menu),
-                  suffixIcon: Container(
-                    margin: const EdgeInsets.all(8.0),
-                    decoration: const BoxDecoration(
-                      color: Color(0xffBDB7A5),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.search,
-                      color: Colors.grey.shade700,
-                    ),
-                  ),
-                  filled: true,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24.0),
-                    borderSide: BorderSide.none,
-                  ),
+      appBar: AppBar(
+        title: const Text('Visa Application'),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          SizedBox(height: kDefaultSpace),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: kDefaultSpace),
+            child: TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                fillColor: Theme.of(context).colorScheme.surfaceContainer,
+                prefixIcon: const Icon(Icons.search),
+                hintText: 'Search for countries',
+                filled: true,
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(24.0),
+                  borderSide: BorderSide.none,
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                itemCount: filteredCountries.length,
-                itemBuilder: (context, index) {
-                  final country = filteredCountries[index];
-                  return VisaCountryCard(
-                    countryName: country['name']!,
-                    imagePath: country['image']!,
-                  );
-                },
-              ),
+          ),
+          SizedBox(height: kDefaultSpace),
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.symmetric(horizontal: kDefaultSpace),
+              itemCount: filteredCountries.length,
+              itemBuilder: (context, index) {
+                final country = filteredCountries[index];
+                return SizedBox(
+                  height: 150,
+                  child: DestinationCard(
+                    name: country['destination']!,
+                    imageUrl: country['imageURL']!,
+                    onTap: () {
+                      GoRouter.of(context).push('/visa-details');
+                    },
+                  ),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
