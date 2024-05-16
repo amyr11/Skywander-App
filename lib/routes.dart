@@ -9,6 +9,8 @@ import 'package:skywander_app/screens/settings/change_details.dart';
 import 'package:skywander_app/screens/settings/change_password.dart';
 import 'package:skywander_app/screens/settings/faq.dart';
 import 'package:skywander_app/screens/settings/settings.dart';
+import 'package:skywander_app/screens/tours/tour_details.dart';
+
 
 /*
 This file contains all the routes used in the app. You can add more routes here and delete the /sample route.
@@ -19,9 +21,11 @@ final GoRouter router = GoRouter(
   routes: <RouteBase>[
     GoRoute(
       path: '/',
-      redirect: (context, state) => FirebaseAuth.instance.currentUser == null
-          ? '/sign-in'
-          : '/onboarding',
+      //redirect: (context, state) => FirebaseAuth.instance.currentUser == null
+      //    ? '/sign-in'
+      //    : '/onboarding',
+
+      redirect: (context, state) => '/tour/details',
     ),
     GoRoute(
       path: '/sign-in',
@@ -72,6 +76,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/settings/faq',
       builder: (context, state) => const FAQScreen(),
+    ),
+    GoRoute(
+      path: '/tour/details',
+      builder: (context, state) => const TourDetailsScreen(),
     ),
   ],
 );
