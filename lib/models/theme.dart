@@ -1,19 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Theme {
-  final String name;
+  final String themeName;
 
-  Theme({required this.name});
+  Theme({required this.themeName});
 
   factory Theme.fromFirestore(DocumentSnapshot doc) {
     return Theme(
-      name: doc['name'] as String,
+      themeName: doc['theme_name'] as String,
     );
   }
 
   Map<String, String> toJson() {
     return {
-      'name': name,
+      'name': themeName,
     };
   }
 }
