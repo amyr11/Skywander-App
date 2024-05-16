@@ -3,6 +3,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart' as firebase_ui_auth;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skywander_app/screens/app.dart';
+import 'package:skywander_app/screens/home/tour_filter.dart';
 import 'package:skywander_app/screens/onboarding.dart';
 import 'package:skywander_app/screens/payments/select_mode_of_payment.dart';
 import 'package:skywander_app/screens/settings/change_details.dart';
@@ -10,6 +11,7 @@ import 'package:skywander_app/screens/settings/change_password.dart';
 import 'package:skywander_app/screens/settings/faq.dart';
 import 'package:skywander_app/screens/settings/settings.dart';
 import 'package:skywander_app/screens/home/tours_in_country.dart';
+import 'package:skywander_app/screens/tours/tour_details.dart';
 
 /*
 This file contains all the routes used in the app. You can add more routes here and delete the /sample route.
@@ -75,7 +77,16 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const FAQScreen(),
     ),
     GoRoute(
-        path: '/tour-tab-tours-in-country',
-        builder: (context, state) => ToursInCountryScreen()),
+      path: '/tours-in-country',
+      builder: (context, state) => ToursInCountryScreen(),
+    ),
+    GoRoute(
+      path: '/tour-details',
+      builder: (context, state) => TourDetailsScreen(),
+    ),
+    GoRoute(
+      path: '/tour-filter',
+      builder: (context, state) => TourFilterScreen(),
+    ),
   ],
 );

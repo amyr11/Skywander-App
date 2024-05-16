@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:skywander_app/styles.dart';
+import 'package:skywander_app/widgets/rating_overlay.dart';
 
 class TourCardWide extends StatelessWidget {
   final String title;
   final String subtitle;
+  final String details;
   final String location;
   final String price;
   final bool isFavorite;
@@ -16,6 +18,7 @@ class TourCardWide extends StatelessWidget {
     Key? key,
     required this.title,
     required this.subtitle,
+    required this.details,
     required this.location,
     required this.price,
     required this.isFavorite,
@@ -29,9 +32,9 @@ class TourCardWide extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return Card(
+        return Card.outlined(
           clipBehavior: Clip.antiAlias,
-          color: getTheme().colorScheme.primaryContainer,
+          color: getTheme().colorScheme.surfaceContainer,
           child: InkWell(
             onTap: onTap,
             child: Column(
@@ -49,32 +52,7 @@ class TourCardWide extends StatelessWidget {
                     Positioned(
                       bottom: 10,
                       left: 10,
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.black54,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                              size: 20,
-                            ),
-                            SizedBox(width: 4),
-                            Text(
-                              rating.toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      child: RatingOverlay(rating: rating),
                     ),
                   ],
                 ),
@@ -90,6 +68,8 @@ class TourCardWide extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 20,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       // Location
                       Row(
@@ -106,9 +86,22 @@ class TourCardWide extends StatelessWidget {
                               fontSize: 16,
                               color: getTheme().colorScheme.onPrimaryContainer,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ],
                       ),
+                      // Details
+                      Text(
+                        details,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: getTheme().colorScheme.onPrimaryContainer,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 10),
                       // Subtitle
                       Text(
                         subtitle,
@@ -116,9 +109,11 @@ class TourCardWide extends StatelessWidget {
                           fontSize: 16,
                           color: getTheme().colorScheme.onPrimaryContainer,
                         ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      // Price and Favorite icon
                       SizedBox(height: 10),
+                      // Price and Favorite icon
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

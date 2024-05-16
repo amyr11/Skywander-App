@@ -18,7 +18,7 @@ ThemeData getTheme() {
       onSecondary: const Color(0xffFFFFFF),
       onSurface: const Color(0xff171716),
       onError: const Color(0xffFFFFFF),
-      primaryContainer: const Color(0xffD6CDBC),
+      primaryContainer: Color.fromARGB(255, 238, 228, 211),
       onPrimaryFixedVariant: const Color(0xff6E6853),
     ),
   );

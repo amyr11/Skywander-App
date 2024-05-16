@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Skywander',
+      debugShowCheckedModeBanner: false,
       routerConfig: router,
       theme: getTheme(),
     );

@@ -20,6 +20,7 @@ class ToursInCountryScreen extends StatelessWidget {
             imageUrl: "https://placehold.co/600x400/png",
             title: 'Daebak Korea',
             subtitle: '5 days · 3 nights',
+            details: 'Experience the best of Korea in 5 days and 3 nights',
             location: 'South Korea',
             price: '₱ 10,000 / pax',
             isFavorite: false,
