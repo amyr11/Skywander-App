@@ -13,6 +13,7 @@ import 'package:skywander_app/screens/settings/change_password.dart';
 import 'package:skywander_app/screens/settings/faq.dart';
 import 'package:skywander_app/screens/settings/settings.dart';
 import 'package:skywander_app/screens/home/tours_in_country.dart';
+import 'package:skywander_app/screens/visa/visa.dart';
 import 'package:skywander_app/screens/wishlist/wishlist.dart';
 
 /*
@@ -27,7 +28,7 @@ final GoRouter router = GoRouter(
         // redirect: (context, state) => FirebaseAuth.instance.currentUser == null
         //     ? '/sign-in'
         //     : '/onboarding',
-        redirect: (context, state) => '/tour-search-result'),
+        redirect: (context, state) => '/visa'),
     GoRoute(
       path: '/sign-in',
       builder: (context, state) => firebase_ui_auth.SignInScreen(
@@ -86,5 +87,6 @@ final GoRouter router = GoRouter(
     GoRoute(
         path: '/tour-search-result',
         builder: (context, state) => const TourResultScreen()),
+    GoRoute(path: '/visa', builder: (context, state) => const VisaScreen()),
   ],
 );
