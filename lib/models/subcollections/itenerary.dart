@@ -1,25 +1,34 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:skywander_app/models/hotel.dart';
 
 class Itenerary {
+  final String eta, etd, image;
   final int day;
-  final String imageUrl;
-  final List<dynamic> agenda; // rip bawal union types sa dart, gawin nalang ba tong enum instead of dynamic? - gelo
+  final List<String> agenda;
+  final Hotel hotel;
   final bool breakfast, lunch, dinner;
 
-  Itenerary(
-      {required this.day,
-      required this.imageUrl,
-      required this.agenda,
-      required this.breakfast,
-      required this.lunch,
-      required this.dinner});
+  Itenerary({
+    required this.eta,
+    required this.etd,
+    required this.image,
+    required this.day,
+    required this.agenda,
+    required this.hotel,
+    required this.breakfast,
+    required this.lunch,
+    required this.dinner,
+  });
 
   factory Itenerary.fromFirestore(DocumentSnapshot doc) {
     return Itenerary(
+      eta: doc['eta'] as String,
+      etd: doc['etd'] as String,
+      image: doc['image'] as String,
       day: doc['day'] as int,
-      imageUrl: doc['imageUrl'] as String,
-      agenda: doc['agenda'] as List<dynamic>,
-      breakfast: doc['breaakfast'] as bool,
+      agenda: (doc['agenda'] as List).map((e) => e as String).toList(),
+      hotel: Hotel.fromFirestore(doc['hotel']),
+      breakfast: doc['breakfast'] as bool,
       lunch: doc['lunch'] as bool,
       dinner: doc['dinner'] as bool,
     );
@@ -27,9 +36,12 @@ class Itenerary {
 
   Map<String, dynamic> toJson() {
     return {
+      'eta': eta,
+      'etd': etd,
+      'image': image,
       'day': day,
-      'imageUrl': imageUrl,
       'agenda': agenda,
+      'hotel': hotel.toJson(),
       'breakfast': breakfast,
       'lunch': lunch,
       'dinner': dinner,
