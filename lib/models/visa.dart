@@ -1,36 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:skywander_app/models/country.dart';
+import 'package:skywander_app/models/destination.dart';
 
 class Visa {
-  final Country country;
-  final List<dynamic> requirements; // - sinunod ko nalang si gelo
+  final Destination destination;
+  final Map<String, double> price;
   final String applicationForm, visaDetails;
-  final double price;
 
-  Visa(
-      {required this.country,
-      required this.requirements,
-      required this.applicationForm,
-      required this.visaDetails,
-      required this.price});
+  Visa({
+    required this.destination,
+    required this.price,
+    required this.applicationForm,
+    required this.visaDetails,
+  });
 
   factory Visa.fromFirestore(DocumentSnapshot doc) {
     return Visa(
-      country: Country.fromFirestore(doc['country']),
-      requirements: doc['requirements'] as List<dynamic>,
-      applicationForm: doc['applicationForm'] as String,
-      visaDetails: doc['visaDetails'] as String,
-      price: doc['price'] as double,
+      destination: Destination.fromFirestore(doc['destination']),
+      price: doc['price'] as Map<String, double>,
+      applicationForm: doc['application_form'] as String,
+      visaDetails: doc['visa_details'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'country': country.toJson(),
-      'requirements': requirements, //idk dito wahaha -romeo
+      'destination': destination.toJson(),
+      'price': price,
       'applicationForm': applicationForm,
       'visaDetails': visaDetails,
-      'price': price
     };
   }
 }
