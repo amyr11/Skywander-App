@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:skywander_app/models/payment_method.dart';
 import 'package:skywander_app/models/tour.dart';
 import 'package:skywander_app/models/user.dart';
 
