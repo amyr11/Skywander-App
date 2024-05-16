@@ -9,7 +9,7 @@ class TourHighlight {
   factory TourHighlight.fromFirestore(DocumentSnapshot doc) {
     return TourHighlight(
         city: doc['city'] as String,
-        touristSpots: doc['touristSpots'] as List<String>);
+        touristSpots: doc['tourist_spots'] as List<String>);
   }
 
   Map<String, dynamic> toJson() {
