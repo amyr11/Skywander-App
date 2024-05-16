@@ -1,2 +1,2 @@
 const String GOOGLE_CLIENT_ID =
-    "487807853291-i3764m3ilr2pbg0lodg9alhvbh01rktt.apps.googleusercontent.com";
+    "969625644281-rb83pb4ul8ha770e0uepo2fnuqe7hvhh.apps.googleusercontent.com";
