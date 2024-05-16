@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Skywander',
       routerConfig: router,
-      theme: kTheme,
+      theme: getTheme(),
     );
   }
 }

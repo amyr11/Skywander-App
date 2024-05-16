@@ -11,79 +11,22 @@ class ToursInCountryScreen extends StatelessWidget {
         title: const Text('Korea'),
         centerTitle: true,
       ),
-      body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.all(22),
-        child: ListView.builder(
-          itemCount: 4,
-          itemBuilder: (BuildContext context, int index) {
-            return const tourCardWide(
-                image: 'assets/images/korea_pic.png',
-                title: 'Daebak Korea',
-                days: '5 days/3 nights',
-                place: 'South Korea',
-                price: '₱ 10,000/pax',
-                size: 96);
-          },
-        ),
-      )),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-            backgroundColor: Color(0xffE4E3E1),
-            activeIcon: Container(
-              height: 30,
-              width: 60,
-              decoration: BoxDecoration(
-                  color: Color(0xffBDB7A5),
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Icon(Icons.home),
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.airplanemode_active),
-            label: 'Visa',
-            activeIcon: Container(
-              height: 30,
-              width: 60,
-              decoration: BoxDecoration(
-                  color: Color(0xffBDB7A5),
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Icon(Icons.airplanemode_active),
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Wishlist',
-            activeIcon: Container(
-              height: 30,
-              width: 60,
-              decoration: BoxDecoration(
-                  color: Color(0xffBDB7A5),
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Icon(Icons.favorite),
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.payments),
-            label: 'Transaction',
-            activeIcon: Container(
-              height: 30,
-              width: 60,
-              decoration: BoxDecoration(
-                  color: Color(0xffBDB7A5),
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Icon(Icons.payments),
-            ),
-          ),
-        ],
-        selectedItemColor: Color(0xff6E6853),
-        selectedIconTheme: IconThemeData(color: Color(0xff5A5A58)),
-        unselectedItemColor: Color(0xff6E6853),
-        unselectedLabelStyle: TextStyle(color: Color(0xff6E6853)),
-        showUnselectedLabels: true,
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: 4,
+        itemBuilder: (BuildContext context, int index) {
+          return TourCardWide(
+            rating: 4.5,
+            imageUrl: "https://placehold.co/600x400/png",
+            title: 'Daebak Korea',
+            subtitle: '5 days · 3 nights',
+            location: 'South Korea',
+            price: '₱ 10,000 / pax',
+            isFavorite: false,
+            onFavorite: () {},
+            onTap: () {},
+          );
+        },
       ),
     );
   }

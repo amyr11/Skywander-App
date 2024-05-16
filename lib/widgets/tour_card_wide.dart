@@ -1,104 +1,166 @@
 import 'package:flutter/material.dart';
 import 'package:skywander_app/styles.dart';
 
-class tourCardWide extends StatelessWidget {
-  final String image;
+class TourCardWide extends StatelessWidget {
   final String title;
-  final String days;
-  final String place;
+  final String subtitle;
+  final String location;
   final String price;
-  final IconData? star;
-  final String? rate;
   final bool isFavorite;
-  final bool isStarred;
-  final double size;
+  final String imageUrl;
+  final double rating;
+  final VoidCallback onFavorite;
+  final VoidCallback onTap;
 
-  const tourCardWide(
-      {super.key,
-      required this.image,
-      required this.title,
-      required this.days,
-      required this.place,
-      required this.price,
-      this.star,
-      this.rate,
-      this.isFavorite = false,
-      this.isStarred = false,
-      required this.size});
+  const TourCardWide({
+    Key? key,
+    required this.title,
+    required this.subtitle,
+    required this.location,
+    required this.price,
+    required this.isFavorite,
+    required this.imageUrl,
+    required this.rating,
+    required this.onFavorite,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: kPrimaryLight,
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            height: size,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(image),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          ListTile(
-            title: Text(title),
-            subtitle: Column(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Card(
+          clipBehavior: Clip.antiAlias,
+          color: getTheme().colorScheme.primaryContainer,
+          child: InkWell(
+            onTap: onTap,
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  days,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0xff6E6853),
-                  ),
-                ),
-                Row(
+                // Image with Rating Overlay
+                Stack(
                   children: [
-                    const Icon(
-                      Icons.location_on,
-                      size: 15,
-                      color: Colors.red,
+                    Image.network(
+                      imageUrl,
+                      width: constraints.maxWidth,
+                      height: constraints.maxWidth * 0.45,
+                      fit: BoxFit.cover,
                     ),
-                    Text(place,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xff6E6853),
-                        )),
+                    Positioned(
+                      bottom: 10,
+                      left: 10,
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.black54,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              color: Colors.yellow,
+                              size: 20,
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              rating.toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-              ],
-            ),
-            trailing: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Container(
-                  width: 106,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    color: Color(0xff6E6853),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      price,
-                      style: k14RegularWhite,
-                    ),
+                // Info section
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      // Location
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            size: 16,
+                            color: getTheme().colorScheme.error,
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            location,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: getTheme().colorScheme.onPrimaryContainer,
+                            ),
+                          ),
+                        ],
+                      ),
+                      // Subtitle
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: getTheme().colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                      // Price and Favorite icon
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color:
+                                  getTheme().colorScheme.onPrimaryFixedVariant,
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: Text(
+                              price,
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: isFavorite
+                                  ? getTheme().colorScheme.error
+                                  : getTheme()
+                                      .colorScheme
+                                      .onPrimaryFixedVariant,
+                            ),
+                            onPressed: onFavorite,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                Icon(
-                  isFavorite == true ? Icons.favorite : Icons.favorite_border,
-                  color: Colors.red,
-                )
               ],
             ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skywander_app/screens/home/home.dart';
+import 'package:skywander_app/screens/home/tours_in_country.dart';
 import 'package:skywander_app/screens/transactions/transaction.dart';
 import 'package:skywander_app/screens/visa/visa.dart';
 import 'package:skywander_app/screens/wishlist/wishlist.dart';
@@ -14,7 +15,8 @@ class AppLayout extends StatefulWidget {
 class _AppLayoutState extends State<AppLayout> {
   int _currentPageIndex = 0;
   final List<Widget> _screens = const <Widget>[
-    HomeScreen(),
+    // HomeScreen(),
+    ToursInCountryScreen(),
     VisaScreen(),
     WishlistScreen(),
     TransactionScreen(),

@@ -153,7 +153,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Text(
               title,
               style: TextStyle(
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).colorScheme.primary,
                 fontSize: 16,
               ),
             ),

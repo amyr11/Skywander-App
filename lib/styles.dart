@@ -4,17 +4,27 @@ import 'package:flutter/material.dart';
 This file contains all the styles and themes used in the app.
 */
 
-// Colors
-Color kPrimaryColor = const Color(0x00AE9F84);
-Color kPrimaryFixed = const Color(0xff6E6853);
-Color kPrimaryLight = const Color(0xffd6cdbc);
+// Theme
+ThemeData getTheme() {
+  return ThemeData(
+    useMaterial3: true,
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: const Color(0xffAE9F84),
+      brightness: Brightness.light,
+    ).copyWith(
+      secondary: const Color(0xff6E6853),
+      error: const Color(0xffB3261E),
+      onPrimary: const Color(0xffFFFFFF),
+      onSecondary: const Color(0xffFFFFFF),
+      onSurface: const Color(0xff171716),
+      onError: const Color(0xffFFFFFF),
+      primaryContainer: const Color(0xffD6CDBC),
+      onPrimaryFixedVariant: const Color(0xff6E6853),
+    ),
+  );
+}
 
-Color kNeutral22 = const Color(0xFF36343B);
-Color kNeutralVariant95 = const Color(0xFFEAEAEA);
-
-Color kLightPrimaryContainer = const Color(0xFFD6CDBC);
-
-Color kLightOnPrimaryContainer = const Color(0xFF796F5C);
+Color kNeutralVariant95 = const Color(0xffEAEAEA);
 
 // Fonts
 TextStyle kLabelLarge = const TextStyle(
@@ -23,18 +33,18 @@ TextStyle kLabelLarge = const TextStyle(
 );
 
 TextStyle kLabelSmallSecondary = TextStyle(
-  color: kTheme.colorScheme.secondary,
+  color: getTheme().colorScheme.secondary,
 );
 
 TextStyle kLabelExtraSmallSecondary = TextStyle(
-  color: kTheme.colorScheme.secondary,
+  color: getTheme().colorScheme.secondary,
   fontSize: 10,
 );
 
 TextStyle k28BoldPrimaryColor = TextStyle(
   fontSize: 28,
   fontWeight: FontWeight.bold,
-  color: kPrimaryColor,
+  color: getTheme().primaryColor,
 );
 TextStyle k24RegularWhite = const TextStyle(
   fontSize: 24,
@@ -60,14 +70,3 @@ TextStyle k12MediumBrown = const TextStyle(
 // Metrics
 double kDefaultSpace = 16.0;
 double kContainerBorderRadius = 10.0;
-
-// Theme
-bool kIsDarkTheme = false;
-
-ThemeData kTheme = ThemeData(
-  useMaterial3: true,
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: kPrimaryColor,
-    brightness: kIsDarkTheme ? Brightness.dark : Brightness.light,
-  ),
-);
