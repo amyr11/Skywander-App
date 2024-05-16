@@ -8,9 +8,9 @@ class TourTransaction {
   final Tour tour;
   final String
       status; //di ko na inenum since galing naman sa db. controlled naman ata natin mga pwede nilang iinput here? -romeo
+  final List<String> passportPicture;
   final DateTime startDate;
   final DateTime endDate;
-  final Map<int, int> headcount; //di ko sure to? sinunod ko lang nasa dd -romeo
   final File tickets;
   final double totalFee;
   final String paymentMethod;
@@ -22,7 +22,7 @@ class TourTransaction {
     required this.status,
     required this.startDate,
     required this.endDate,
-    required this.headcount,
+    required this.passportPicture,
     required this.tickets,
     required this.totalFee,
     required this.paymentMethod,
@@ -36,9 +36,9 @@ class TourTransaction {
       status: doc['status'] as String,
       startDate: doc['startDate'].toDate() as DateTime,
       endDate: doc['endDate'].toDate() as DateTime,
-      headcount: Map<int, int>.from(doc['headcount']),
+      passportPicture: doc['passport_picture'] as List<String>,
       tickets: File(doc['tickets'] as String),
-      totalFee: doc['totalFee'] as double,
+      totalFee: doc['total_fee'] as double,
       paymentMethod: doc['payment_method'] as String,
       paid: doc['paid'] as bool,
     );
@@ -51,7 +51,7 @@ class TourTransaction {
       'status': status,
       'start_date': startDate,
       'end_date': endDate,
-      'headcount': headcount,
+      'passport_picture': passportPicture,
       'tickets': tickets.path,
       'totalFee': totalFee,
       'payment_method': paymentMethod,
