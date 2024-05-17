@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skywander_app/styles.dart';
+import 'package:skywander_app/widgets/itenerary.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class TourDetailsScreen extends StatefulWidget {
@@ -248,7 +250,7 @@ class _TourDetailsScreenState extends State<TourDetailsScreen>
                           horizontal: 24.0, vertical: 12.0)),
                     ),
                     onPressed: () {
-                      // Handle booking action
+                      GoRouter.of(context).push('/tour-booking');
                     },
                     child: Text('Book Now',
                         style: TextStyle(fontSize: 16.0, color: Colors.white)),
@@ -339,7 +341,7 @@ ETA: 5J187 ICN-MNL 0040-0400
                     EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0)),
               ),
               onPressed: () {
-                // Handle booking action
+                GoRouter.of(context).push('/tour-booking');
               },
               child: Text('Book Now',
                   style: TextStyle(fontSize: 16.0, color: Colors.white)),
@@ -372,7 +374,7 @@ ETA: 5J187 ICN-MNL 0040-0400
                     EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0)),
               ),
               onPressed: () {
-                // Handle booking action
+                GoRouter.of(context).push('/tour-booking');
               },
               child: Text('Book Now',
                   style: TextStyle(fontSize: 16.0, color: Colors.white)),
@@ -405,87 +407,11 @@ ETA: 5J187 ICN-MNL 0040-0400
                     EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0)),
               ),
               onPressed: () {
-                // Handle booking action
+                GoRouter.of(context).push('/tour-booking');
               },
               child: Text('Book Now',
                   style: TextStyle(fontSize: 16.0, color: Colors.white)),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ItineraryDay extends StatelessWidget {
-  final String day;
-  final String description;
-  final List<String> mealIcons;
-  final String imageURL;
-  final String details;
-
-  const ItineraryDay({
-    required this.day,
-    required this.description,
-    required this.mealIcons,
-    required this.imageURL,
-    required this.details,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      day,
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      description,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                children: mealIcons.map((icon) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 4.0),
-                    child: Icon(
-                      icon == 'breakfast'
-                          ? Icons.free_breakfast
-                          : icon == 'lunch'
-                              ? Icons.lunch_dining
-                              : Icons.dinner_dining,
-                      size: 16,
-                    ),
-                  );
-                }).toList(),
-              ),
-            ],
-          ),
-          SizedBox(height: 8),
-          Container(
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(kContainerBorderRadius),
-            ),
-            child: Image.network(imageURL, fit: BoxFit.cover),
-          ),
-          SizedBox(height: 8),
-          Text(
-            details,
-            style: TextStyle(fontSize: 16),
           ),
         ],
       ),

@@ -12,6 +12,7 @@ import 'package:skywander_app/screens/settings/change_password.dart';
 import 'package:skywander_app/screens/settings/faq.dart';
 import 'package:skywander_app/screens/settings/settings.dart';
 import 'package:skywander_app/screens/home/tours_in_country.dart';
+import 'package:skywander_app/screens/tours/tour_booking.dart';
 import 'package:skywander_app/screens/tours/tour_details.dart';
 import 'package:skywander_app/screens/visa/visa.dart';
 import 'package:skywander_app/screens/visa/visa_application_form.dart';
@@ -87,6 +88,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/tour-details',
       builder: (context, state) => TourDetailsScreen(),
+    ),
+    GoRoute(
+      path: '/tour-booking',
+      builder: (context, state) => const TourBookingScreen(),
     ),
     GoRoute(
       path: '/tour-filter',
