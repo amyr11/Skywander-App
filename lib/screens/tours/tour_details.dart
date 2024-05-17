@@ -1,17 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:skywander_app/styles.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MaterialApp(
-    home: TourDetailsScreen(),
-  ));
-}
 
 class TourDetailsScreen extends StatefulWidget {
   const TourDetailsScreen({super.key});
@@ -20,7 +11,8 @@ class TourDetailsScreen extends StatefulWidget {
   _TourDetailsScreenState createState() => _TourDetailsScreenState();
 }
 
-class _TourDetailsScreenState extends State<TourDetailsScreen> with SingleTickerProviderStateMixin {
+class _TourDetailsScreenState extends State<TourDetailsScreen>
+    with SingleTickerProviderStateMixin {
   bool isFavorite = false;
   late TabController _tabController;
 
@@ -31,8 +23,6 @@ class _TourDetailsScreenState extends State<TourDetailsScreen> with SingleTicker
   }
 
   Future<Map<String, String>> _fetchTourDetails() async {
-    // Simulate fetching data from Firebase with placeholders
-    await Future.delayed(Duration(seconds: 2)); // Simulate network delay
     return {
       'inclusions': '''
 - 4 nights room accommodation with daily hotel breakfast on twin sharing.
@@ -61,7 +51,8 @@ class _TourDetailsScreenState extends State<TourDetailsScreen> with SingleTicker
       length: 4,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Daebak Korea'),
+          title: Text('Tour Details'),
+          centerTitle: true,
         ),
         body: FutureBuilder<Map<String, String>>(
           future: _fetchTourDetails(),
@@ -95,22 +86,30 @@ class _TourDetailsScreenState extends State<TourDetailsScreen> with SingleTicker
                                     children: [
                                       Text(
                                         'Daebak Korea',
-                                        style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontSize: 24.0,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(width: 8.0),
                                       Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 6.0, vertical: 2.0),
                                         decoration: BoxDecoration(
                                           color: Color(0xFFAE9F84),
-                                          borderRadius: BorderRadius.circular(12.0),
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
                                         ),
                                         child: Row(
                                           children: [
-                                            Icon(Icons.star, color: Colors.white, size: 16.0),
+                                            Icon(Icons.star,
+                                                color: Colors.white,
+                                                size: 16.0),
                                             SizedBox(width: 4.0),
                                             Text(
                                               '4.5',
-                                              style: TextStyle(color: Colors.white, fontSize: 14.0),
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14.0),
                                             ),
                                           ],
                                         ),
@@ -120,7 +119,9 @@ class _TourDetailsScreenState extends State<TourDetailsScreen> with SingleTicker
                                   SizedBox(height: 4.0),
                                   Text(
                                     'Manila - Seoul 4D 4N Tour',
-                                    style: TextStyle(fontSize: 18.0, color: Colors.grey[700]),
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        color: Colors.grey[700]),
                                   ),
                                 ],
                               ),
@@ -129,15 +130,21 @@ class _TourDetailsScreenState extends State<TourDetailsScreen> with SingleTicker
                                 children: [
                                   Text(
                                     'from',
-                                    style: TextStyle(fontSize: 12.0, color: Colors.grey[700]),
+                                    style: TextStyle(
+                                        fontSize: 12.0,
+                                        color: Colors.grey[700]),
                                   ),
                                   Text(
                                     'P 33,999',
-                                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   Text(
                                     '/ all in per person',
-                                    style: TextStyle(fontSize: 12.0, color: Colors.grey[700]),
+                                    style: TextStyle(
+                                        fontSize: 12.0,
+                                        color: Colors.grey[700]),
                                   ),
                                 ],
                               ),
@@ -146,7 +153,9 @@ class _TourDetailsScreenState extends State<TourDetailsScreen> with SingleTicker
                           SizedBox(height: 0.0),
                           IconButton(
                             icon: Icon(
-                              isFavorite ? Icons.favorite : Icons.favorite_border,
+                              isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
                               color: isFavorite ? Colors.red : null,
                             ),
                             onPressed: () {
@@ -161,19 +170,20 @@ class _TourDetailsScreenState extends State<TourDetailsScreen> with SingleTicker
                             tabs: [
                               Tab(text: 'Overview'),
                               Tab(text: 'Itinerary'),
-                              Tab(text: 'Hotel Details'),
-                              Tab(text: 'Reviews'),
+                              // Tab(text: 'Hotel'),
+                              // Tab(text: 'Reviews'),
                             ],
                           ),
                           SizedBox(
-                            height: 400.0, // Set an appropriate height for the TabBarView
+                            height:
+                                500.0, // Set an appropriate height for the TabBarView
                             child: TabBarView(
                               controller: _tabController,
                               children: [
                                 _buildOverviewTab(tourDetails),
                                 _buildItineraryTab(),
-                                _buildHotelDetailsTab(),
-                                _buildReviewsTab(),
+                                // _buildHotelDetailsTab(),
+                                // _buildReviewsTab(),
                               ],
                             ),
                           ),
@@ -229,18 +239,22 @@ class _TourDetailsScreenState extends State<TourDetailsScreen> with SingleTicker
                 Center(
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Color(0xFFAE9F84)),
+                      backgroundColor:
+                          MaterialStateProperty.all(Color(0xFFAE9F84)),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       )),
-                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0)),
+                      padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                          horizontal: 24.0, vertical: 12.0)),
                     ),
                     onPressed: () {
                       // Handle booking action
                     },
-                    child: Text('Book Now', style: TextStyle(fontSize: 16.0, color: Colors.white)),
+                    child: Text('Book Now',
+                        style: TextStyle(fontSize: 16.0, color: Colors.white)),
                   ),
                 ),
+                SizedBox(height: 24.0),
               ],
             ),
           ),
@@ -250,17 +264,17 @@ class _TourDetailsScreenState extends State<TourDetailsScreen> with SingleTicker
   }
 
   Widget _buildItineraryTab() {
-  return SingleChildScrollView(
-    padding: EdgeInsets.all(16.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ItineraryDay(
-          day: 'DAY 1',
-          description: 'Check in at Samwon Plaza Hotel',
-          mealIcons: ['breakfast', 'lunch', 'dinner'],
-          imagePath: 'assets/images/day1.jpg',
-          details: '''
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ItineraryDay(
+            day: 'DAY 1',
+            description: 'Check in at Samwon Plaza Hotel',
+            mealIcons: ['breakfast', 'lunch', 'dinner'],
+            imageURL: 'https://placehold.co/600x300/png',
+            details: '''
 - Arrive the airport, meet the tour guide
 - Transfer to Chuncheon
 - Nami Island with ferry ride
@@ -270,26 +284,26 @@ class _TourDetailsScreenState extends State<TourDetailsScreen> with SingleTicker
 - Transfer to hotel and check in
 ETA: 5J186 MNL-ICN 0250-0805
           ''',
-        ),
-        ItineraryDay(
-          day: 'DAY 2',
-          description: 'Check in at Golden City Hotel Dongdaemun or similar',
-          mealIcons: ['breakfast', 'lunch', 'dinner'],
-          imagePath: 'assets/images/day2.jpg',
-          details: '''
+          ),
+          ItineraryDay(
+            day: 'DAY 2',
+            description: 'Check in at Golden City Hotel Dongdaemun or similar',
+            mealIcons: ['breakfast', 'lunch', 'dinner'],
+            imageURL: 'https://placehold.co/600x300/png',
+            details: '''
 - Everland Theme Park
 - Coex Starfield Library
 - Kpop Road
 - Cosmetic Outlet
 - Transfer to hotel and check in.
           ''',
-        ),
-        ItineraryDay(
-          day: 'DAY 3',
-          description: 'Check in at Golden City Hotel Dongdaemun or similar',
-          mealIcons: ['breakfast', 'lunch', 'dinner'],
-          imagePath: 'assets/images/day3.jpg',
-          details: '''
+          ),
+          ItineraryDay(
+            day: 'DAY 3',
+            description: 'Check in at Golden City Hotel Dongdaemun or similar',
+            mealIcons: ['breakfast', 'lunch', 'dinner'],
+            imageURL: 'https://placehold.co/600x300/png',
+            details: '''
 - Blue House (pass by)
 - Gyeongbokgung Palace (cherry blossom)
 - National Folk Museum
@@ -300,39 +314,41 @@ ETA: 5J186 MNL-ICN 0250-0805
 - Free shopping at Myeongdong Street.
 - Transfer back to hotel.
           ''',
-        ),
-        ItineraryDay(
-          day: 'DAY 4',
-          description: 'Check in at Golden City Hotel Dongdaemun or similar',
-          mealIcons: ['breakfast', 'lunch', 'dinner'],
-          imagePath: 'assets/images/day4.jpg',
-          details: '''
+          ),
+          ItineraryDay(
+            day: 'DAY 4',
+            description: 'Check in at Golden City Hotel Dongdaemun or similar',
+            mealIcons: ['breakfast', 'lunch', 'dinner'],
+            imageURL: 'https://placehold.co/600x300/png',
+            details: '''
 - Hanbok wearing experience at Seaweed Museum
 - Free time for shopping at Hongdae
 - Transfer to Incheon airport for flight back to Manila
 ETA: 5J187 ICN-MNL 0040-0400
           ''',
-        ),
-        SizedBox(height: 24.0),
-        Center(
-          child: ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Color(0xFFAE9F84)),
-              shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              )),
-              padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0)),
-            ),
-            onPressed: () {
-              // Handle booking action
-            },
-            child: Text('Book Now', style: TextStyle(fontSize: 16.0, color: Colors.white)),
           ),
-        ),
-      ],
-    ),
-  );
-}
+          SizedBox(height: 24.0),
+          Center(
+            child: ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Color(0xFFAE9F84)),
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                )),
+                padding: MaterialStateProperty.all(
+                    EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0)),
+              ),
+              onPressed: () {
+                // Handle booking action
+              },
+              child: Text('Book Now',
+                  style: TextStyle(fontSize: 16.0, color: Colors.white)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildHotelDetailsTab() {
     return SingleChildScrollView(
@@ -352,12 +368,14 @@ ETA: 5J187 ICN-MNL 0040-0400
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 )),
-                padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0)),
+                padding: MaterialStateProperty.all(
+                    EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0)),
               ),
               onPressed: () {
                 // Handle booking action
               },
-              child: Text('Book Now', style: TextStyle(fontSize: 16.0, color: Colors.white)),
+              child: Text('Book Now',
+                  style: TextStyle(fontSize: 16.0, color: Colors.white)),
             ),
           ),
         ],
@@ -383,12 +401,14 @@ ETA: 5J187 ICN-MNL 0040-0400
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 )),
-                padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0)),
+                padding: MaterialStateProperty.all(
+                    EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0)),
               ),
               onPressed: () {
                 // Handle booking action
               },
-              child: Text('Book Now', style: TextStyle(fontSize: 16.0, color: Colors.white)),
+              child: Text('Book Now',
+                  style: TextStyle(fontSize: 16.0, color: Colors.white)),
             ),
           ),
         ],
@@ -401,14 +421,14 @@ class ItineraryDay extends StatelessWidget {
   final String day;
   final String description;
   final List<String> mealIcons;
-  final String imagePath;
+  final String imageURL;
   final String details;
 
   const ItineraryDay({
     required this.day,
     required this.description,
     required this.mealIcons,
-    required this.imagePath,
+    required this.imageURL,
     required this.details,
   });
 
@@ -427,7 +447,8 @@ class ItineraryDay extends StatelessWidget {
                   children: [
                     Text(
                       day,
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       description,
@@ -454,7 +475,13 @@ class ItineraryDay extends StatelessWidget {
             ],
           ),
           SizedBox(height: 8),
-          Image.asset(imagePath, fit: BoxFit.cover),
+          Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(kContainerBorderRadius),
+            ),
+            child: Image.network(imageURL, fit: BoxFit.cover),
+          ),
           SizedBox(height: 8),
           Text(
             details,
@@ -497,9 +524,11 @@ class _TourImageCarouselState extends State<TourImageCarousel> {
             return Builder(
               builder: (BuildContext context) {
                 return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5.0), // Control the gap between images
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 5.0), // Control the gap between images
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0), // Round the edges of the image
+                    borderRadius: BorderRadius.circular(
+                        20.0), // Round the edges of the image
                     child: Image.asset(
                       i,
                       fit: BoxFit.cover,
