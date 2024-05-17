@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _buildCategory(context, 'For you', selectedCategory == 'For you'),
             _buildCategory(context, 'Latest', selectedCategory == 'Latest'),
             _buildCategory(
-                context, 'Countries', selectedCategory == 'Countries'),
+                context, 'Destination', selectedCategory == 'Destination'),
             _buildCategory(context, 'All', selectedCategory == 'All'),
           ],
         ),
