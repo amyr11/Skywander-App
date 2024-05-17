@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 
 class VisaApplicationFormScreen extends StatefulWidget {
-  const VisaApplicationFormScreen({super.key});
+  const VisaApplicationFormScreen({Key? key}) : super(key: key);
 
   @override
   _VisaApplicationFormScreenState createState() =>
@@ -48,6 +48,8 @@ class _VisaApplicationFormScreenState extends State<VisaApplicationFormScreen> {
   }
 
   void _uploadFile() {
+    // Dummy upload function
+    print('File uploaded successfully.');
     setState(() {
       _isFileUploaded = true;
     });
@@ -57,17 +59,9 @@ class _VisaApplicationFormScreenState extends State<VisaApplicationFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFD6CDBC),
         centerTitle: true,
         title: Text(
           'Visa Application',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.pop(context);
-          },
         ),
       ),
       body: ListView(
@@ -90,86 +84,9 @@ class _VisaApplicationFormScreenState extends State<VisaApplicationFormScreen> {
           Divider(color: Colors.black),
           SizedBox(height: 16),
 
-          // Display chosen file with CANCEL and UPLOAD buttons
-          if (_selectedFileName != null && !_isFileUploaded) ...[
-            Card(
-              color: Color.fromARGB(193, 253, 253, 253),
-              elevation: 3,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.picture_as_pdf, color: Colors.red, size: 32.0),
-                        SizedBox(width: 8),
-                        Flexible(
-                          child: Text(
-                            _selectedFileName!,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.cancel, color: Colors.red),
-                          onPressed: _deleteFile,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed: _deleteFile,
-                          child: Text(
-                            'CANCEL',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        ElevatedButton(
-                          onPressed: _uploadFile,
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Color(0xFFB89F76),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 10.0),
-                          ),
-                          child: Text('UPLOAD'),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
-          ],
-
-          // Display uploaded file
-          if (_isFileUploaded && _selectedFileName != null) ...[
-            Card(
-              elevation: 0,
-              child: ListTile(
-                leading: Icon(Icons.picture_as_pdf, color: Colors.red),
-                title: Text(_selectedFileName!),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: _deleteFile,
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
-          ],
-
-          // Initial state: Upload a file here
-          if (_selectedFileName == null || !_isFileUploaded) ...[
+          // Conditionally show/hide "Upload a file" container
+          if (_selectedFileName == null) ...[
+            // Upload a file container
             Card(
               color: Color.fromARGB(193, 253, 253, 253),
               elevation: 3,
@@ -195,7 +112,8 @@ class _VisaApplicationFormScreenState extends State<VisaApplicationFormScreen> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: '(PDF file type only and maximum of 1GB)',
+                                  text:
+                                      '(PDF file type only and maximum of 1GB)',
                                   style: TextStyle(
                                     color: Color.fromARGB(255, 116, 115, 115),
                                     fontSize: 14,
@@ -228,13 +146,46 @@ class _VisaApplicationFormScreenState extends State<VisaApplicationFormScreen> {
             SizedBox(height: 16),
           ],
 
+          // Display chosen file with CANCEL button
+          if (_selectedFileName != null) ...[
+            Card(
+              color: Color.fromARGB(193, 253, 253, 253),
+              elevation: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.picture_as_pdf, color: Colors.red, size: 32.0),
+                    SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        _selectedFileName!,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.cancel, color: Colors.red),
+                      onPressed: _deleteFile,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+          ],
+
           // Additional content (Japan Tourist Visa, Payment Method)
           Card(
             color: Color.fromARGB(193, 253, 253, 253),
             elevation: 2,
             child: Theme(
-              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              data:
+                  Theme.of(context).copyWith(dividerColor: Colors.transparent),
               child: ExpansionTile(
+                initiallyExpanded: true,
                 title: Text(
                   'Japan Tourist Visa',
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -279,8 +230,10 @@ class _VisaApplicationFormScreenState extends State<VisaApplicationFormScreen> {
             color: Color.fromARGB(193, 253, 253, 253),
             elevation: 2,
             child: Theme(
-              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              data:
+                  Theme.of(context).copyWith(dividerColor: Colors.transparent),
               child: ExpansionTile(
+                initiallyExpanded: true,
                 title: Text(
                   'Payment Method',
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -342,18 +295,17 @@ class _VisaApplicationFormScreenState extends State<VisaApplicationFormScreen> {
                   ],
                 ),
               ),
+              // Only show the pay button if a file is uploaded
               ElevatedButton(
-                onPressed: () {
-                  // Handle pay button press
-                },
+                onPressed: _selectedFileName != null ? _uploadFile : null,
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Color(0xFFB89F76),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.0),
                   ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 50.0, vertical: 5.0),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 50.0, vertical: 5.0),
                 ),
                 child: Text(
                   'Pay',
