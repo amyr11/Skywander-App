@@ -181,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return _buildForYouView(context);
       case 'Latest':
         return _buildLatestView(context);
-      case 'Countries':
+      case 'Destination':
         return _buildCountriesView(context);
       case 'All':
         return _buildAllView(context);

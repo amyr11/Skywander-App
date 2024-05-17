@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skywander_app/widgets/tour_card_wide.dart';
 import 'package:skywander_app/screens/app.dart';
 
@@ -26,7 +27,9 @@ class ToursInCountryScreen extends StatelessWidget {
             price: '₱ 10,000 / pax',
             isFavorite: false,
             onFavorite: () {},
-            onTap: () {},
+            onTap: () {
+              GoRouter.of(context).push('/tour-details');
+            },
           );
         },
       ),
