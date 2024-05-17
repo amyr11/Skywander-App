@@ -16,21 +16,31 @@ class _TransactionScreenState extends State<TransactionScreen> {
   int _selectedIndex = 0;
   static const List<String> _statusOptions = ['Upcoming', 'Completed', 'Cancelled'];
 
+  bool _isTripPackagesExpanded = true;
+  bool _isVisaSectionExpanded = true; 
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-      ),
-      body: Column(
-        children: [
-          SizedBox(height: 20),
-          _buildSegmentedControl(),
-          SizedBox(height: 20),
-          _selectedIndex == 0 ? _buildTripPackages() : _buildTransactionList(),
-        ],
-      ),
-    );
-  }
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(),
+    body: Column(
+      children: [
+        SizedBox(height: 20),
+        _buildSegmentedControl(),
+        SizedBox(height: 20),
+        _selectedIndex == 0
+            ? Column(
+                children: [
+                  _buildTripPackages(),
+                  _buildVisaSection(), // Add this line
+                ],
+              )
+            : _buildTransactionList(),
+      ],
+    ),
+  );
+}
+
 
   Widget _buildSegmentedControl() {
     return Container(
@@ -72,9 +82,9 @@ Widget _buildSegmentedButton(String label, int index) {
     },
     child: Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 21),
+        padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 20),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(1.0),
           color: _selectedIndex == index ? Color(0xFFAE9F84) : Colors.transparent,
         ),
         child: Center(
@@ -92,7 +102,6 @@ Widget _buildSegmentedButton(String label, int index) {
 
 
 
-bool _isTripPackagesExpanded = true;
 
 Widget _buildTripPackages() {
   // This is a placeholder for displaying trip packages
@@ -133,7 +142,6 @@ Widget _buildTripPackages() {
     ],
   );
 }
-
 
 
 Widget _buildTripDetailsCard(String title, String description) {
@@ -306,6 +314,107 @@ Widget _buildTripDetailsCard(String title, String description) {
     ),
   );
 }
+
+  
+Widget _buildVisaSection() {
+  // This is a placeholder for displaying visa details
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Visa Details',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _isVisaSectionExpanded = !_isVisaSectionExpanded;
+                });
+              },
+              icon: Icon(
+                _isVisaSectionExpanded ? Icons.expand_less : Icons.expand_more,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+      if (_isVisaSectionExpanded) ...[
+        _buildVisaDetailsCard(
+          'SK Tourist Visa',
+          'Place of Issue: Metro Manila',
+          'https://cdn.britannica.com/49/1949-004-8818300C/Flag-South-Korea.jpg',
+        ),
+        // Add more visa details cards as needed
+      ],
+    ],
+  );
+}
+
+Widget _buildVisaDetailsCard(String title, String description, String imageUrl) {
+  return Container(
+    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+    decoration: BoxDecoration(
+      color: Color(0xFFDFDDDA),
+      borderRadius: BorderRadius.circular(15),
+      border: Border.all(
+        color: Colors.grey.withOpacity(0.5),
+        width: 1,
+      ),
+    ),
+    child: Card(
+      elevation: 0,
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Stack(
+        children: [
+          ListTile(
+            title: Text(
+              title,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(description, style: TextStyle(fontSize: 16)),
+          ),
+          Positioned(
+            top: 5,
+            right: 5,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                imageUrl,
+                width: 99.05,
+                height: 50,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Positioned(
+            top: 50,
+            right: 0,
+            left: 0,
+            child: Row(
+              children: [
+                Container(
+                  height: 2,
+                  width: 99.05,
+                  color: Colors.grey.withOpacity(0.5),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 
 
 
