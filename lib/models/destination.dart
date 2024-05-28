@@ -1,24 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Destination {
   final String name, image;
   final bool popular;
 
   Destination({required this.name, required this.image, required this.popular});
 
-  factory Destination.fromFirestore(DocumentSnapshot doc) {
+  factory Destination.fromFirestore(Map<String, dynamic> doc) {
     return Destination(
-      name: doc['name'] as String,
-      image: doc['image'] as String,
-      popular: doc['popular'] as bool, //NOTE: ginawa kong string nalang din para madali sa map HAHAHAHA
+      name: doc['name'],
+      image: doc['image'],
+      popular: doc['popular'],
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'image': image,
-      "popular": popular
-    };
+    return {'name': name, 'image': image, "popular": popular};
   }
 }

@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skywander_app/models/destination.dart';
+import 'package:skywander_app/models/tour.dart';
+import 'package:skywander_app/services/database/firestore_service.dart';
 import 'package:skywander_app/styles.dart';
 import 'package:skywander_app/widgets/destination_card.dart';
 import 'package:skywander_app/widgets/tour_card.dart';
@@ -15,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String selectedCategory = 'For you';
+  final FirestoreService _firestoreService = FirestoreService();
 
   @override
   Widget build(BuildContext context) {
@@ -182,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 'Latest':
         return _buildLatestView(context);
       case 'Destination':
-        return _buildCountriesView(context);
+        return _buildDestinationsView(context);
       case 'All':
         return _buildAllView(context);
       default:
@@ -202,120 +207,140 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildLatestView(BuildContext context) {
-    List dummyMap = [
-      {
-        'title': 'Trip to Japan',
-        'subtitle': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        'details': '5 days · 4 nights',
-        'location': 'Japan',
-        'price': '₱50,000 / pax',
-        'isFavorite': false,
-        'imageUrl': 'https://placehold.co/600x400/png',
-        'rating': 5.0,
-      },
-      {
-        'title': 'Trip to Paris',
-        'subtitle': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        'details': '5 days · 4 nights',
-        'location': 'Paris',
-        'price': '₱50,000 / pax',
-        'isFavorite': false,
-        'imageUrl': 'https://placehold.co/600x400/png',
-        'rating': 4.8,
-      },
-    ];
+    return _buildSection(
+      context,
+      title: 'Latest tours',
+      child: StreamBuilder<QuerySnapshot>(
+        stream: _firestoreService.getLatestTours(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('Error loading tours'),
+            );
+          }
 
-    return _buildVerticalList(
-      itemCount: dummyMap.length,
-      itemBuilder: (context, index) {
-        return TourCardWide(
-          title: dummyMap[index]['title'],
-          subtitle: dummyMap[index]['subtitle'],
-          details: dummyMap[index]['details'],
-          location: dummyMap[index]['location'],
-          price: dummyMap[index]['price'],
-          isFavorite: dummyMap[index]['isFavorite'],
-          imageUrl: dummyMap[index]['imageUrl'],
-          rating: dummyMap[index]['rating'],
-          onFavorite: () {},
-          onTap: () {
-            GoRouter.of(context).push('/tour-details');
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          List<DocumentSnapshot> tourDocs = snapshot.data?.docs ?? [];
+          if (tourDocs.isEmpty) {
+            return const Center(
+              child: Text('No tours available'),
+            );
+          }
+
+          return _buildVerticalList(
+            itemCount: tourDocs.length,
+            itemBuilder: (context, index) {
+              Tour tour = tourDocs[index].data() as Tour;
+
+              return TourCardWide(
+                title: tour.title,
+                subtitle: tour.subtitle,
+                details: '${tour.days} days · ${tour.nights} nights',
+                location: tour.origin,
+                price: '₱${tour.basePrice} / pax',
+                isFavorite: false,
+                imageUrl: tour.image,
+                rating: 5.0,
+                onFavorite: () {},
+                onTap: () {
+                  GoRouter.of(context).push('/tour-details');
+                },
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildDestinationsView(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _firestoreService.getDestinations(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Center(
+            child: Text('Error loading destinations'),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        List<DocumentSnapshot> destDocs = snapshot.data?.docs ?? [];
+        if (destDocs.isEmpty) {
+          return const Center(
+            child: Text('No destinations available'),
+          );
+        }
+
+        return _buildVerticalList(
+          itemCount: destDocs.length,
+          itemBuilder: (context, index) {
+            Destination dest = destDocs[index].data() as Destination;
+
+            return DestinationCard(
+              name: dest.name,
+              imageUrl: dest.image,
+              onTap: () {
+                GoRouter.of(context).push('/tours-in-country');
+              },
+            );
           },
         );
       },
     );
   }
 
-  Widget _buildCountriesView(BuildContext context) {
-    List dummyMap = [
-      {
-        'destination': '🇯🇵 Japan',
-        'imageURL':
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNQXkHPjenNtb0rxeCdeb0uFdP1JqBGmFjFDtd3UVMQg&s'
-      },
-      {
-        'destination': '🇫🇷 Paris',
-        'imageURL':
-            'https://lp-cms-production.imgix.net/2021-05/shutterstockRF_1321418885.jpg?auto=format&fit=crop&ar=1:1&q=75&w=1200'
-      },
-    ];
-
-    return _buildVerticalList(
-      itemCount: dummyMap.length,
-      itemBuilder: (context, index) {
-        return SizedBox(
-          height: 150,
-          child: DestinationCard(
-            name: dummyMap[index]['destination'],
-            imageUrl: dummyMap[index]['imageURL'],
-            onTap: () {
-              GoRouter.of(context).push('/tours-in-country');
-            },
-          ),
-        );
-      },
-    );
-  }
-
   Widget _buildAllView(BuildContext context) {
-    List dummyMap = [
-      {
-        'title': 'Trip to Japan',
-        'subtitle': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        'details': '5 days · 4 nights',
-        'location': 'Japan',
-        'price': '₱50,000 / pax',
-        'isFavorite': false,
-        'imageUrl': 'https://placehold.co/600x400/png',
-        'rating': 5.0,
-      },
-      {
-        'title': 'Trip to Paris',
-        'subtitle': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        'details': '5 days · 4 nights',
-        'location': 'Paris',
-        'price': '₱50,000 / pax',
-        'isFavorite': false,
-        'imageUrl': 'https://placehold.co/600x400/png',
-        'rating': 4.8,
-      },
-    ];
+    return StreamBuilder<QuerySnapshot>(
+      stream: _firestoreService.getTours(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Center(
+            child: Text('Error loading tours'),
+          );
+        }
 
-    return _buildVerticalList(
-      itemCount: dummyMap.length,
-      itemBuilder: (context, index) {
-        return TourCardWide(
-          title: dummyMap[index]['title'],
-          subtitle: dummyMap[index]['subtitle'],
-          details: dummyMap[index]['details'],
-          location: dummyMap[index]['location'],
-          price: dummyMap[index]['price'],
-          isFavorite: dummyMap[index]['isFavorite'],
-          imageUrl: dummyMap[index]['imageUrl'],
-          rating: dummyMap[index]['rating'],
-          onFavorite: () {},
-          onTap: () {
-            GoRouter.of(context).push('/tour-details');
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        List<DocumentSnapshot> tourDocs = snapshot.data?.docs ?? [];
+        if (tourDocs.isEmpty) {
+          return const Center(
+            child: Text('No tours available'),
+          );
+        }
+
+        return _buildVerticalList(
+          itemCount: tourDocs.length,
+          itemBuilder: (context, index) {
+            Tour tour = tourDocs[index].data() as Tour;
+
+            return TourCardWide(
+              title: tour.title,
+              subtitle: tour.subtitle,
+              details: '${tour.days} days · ${tour.nights} nights',
+              location: tour.origin,
+              price: '₱${tour.basePrice} / pax',
+              isFavorite: false,
+              imageUrl: tour.image,
+              rating: 5.0,
+              onFavorite: () {},
+              onTap: () {
+                GoRouter.of(context).push('/tour-details');
+              },
+            );
           },
         );
       },
@@ -323,45 +348,74 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildRecommended(BuildContext context) {
-    List dummyMap = [
-      {
-        'title': 'Trip to Japan',
-        'subtitle': '5 days · 4 nights',
-        'location': 'Japan',
-        'price': '₱50,000 / pax',
-        'isFavorite': false,
-        'imageUrl': 'https://placehold.co/600x400/png',
-        'rating': 5.0,
-      },
-      {
-        'title': 'Trip to Paris',
-        'subtitle': '5 days · 4 nights',
-        'location': 'Paris',
-        'price': '₱50,000 / pax',
-        'isFavorite': false,
-        'imageUrl': 'https://placehold.co/600x400/png',
-        'rating': 4.8,
-      },
-    ];
-
     return _buildSection(
       context,
       title: 'Recommended tours',
-      child: _buildHorizontalList(
-        height: 311.0,
-        itemCount: dummyMap.length,
-        itemBuilder: (context, index) {
-          return TourCard(
-            title: dummyMap[index]['title'],
-            subtitle: dummyMap[index]['subtitle'],
-            location: dummyMap[index]['location'],
-            price: dummyMap[index]['price'],
-            isFavorite: dummyMap[index]['isFavorite'],
-            imageUrl: dummyMap[index]['imageUrl'],
-            rating: dummyMap[index]['rating'],
-            onFavorite: () {},
-            onTap: () {
-              GoRouter.of(context).push('/tour-details');
+      child: StreamBuilder<QuerySnapshot>(
+        stream: _firestoreService.getRecommendedTours(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('Error loading tours'),
+            );
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          List<DocumentSnapshot> tourDocs = snapshot.data?.docs ?? [];
+          if (tourDocs.isEmpty) {
+            return const Center(
+              child: Text('No tours available'),
+            );
+          }
+
+          return _buildHorizontalList(
+            height: 311.0,
+            itemCount: tourDocs.length,
+            itemBuilder: (context, index) {
+              Tour tour = tourDocs[index].data() as Tour;
+
+              return FutureBuilder<QuerySnapshot>(
+                future: _firestoreService
+                    .getDestinationsFromReferences(tour.destinations)
+                    .first,
+                builder: (context, destSnapshot) {
+                  if (destSnapshot.hasError) {
+                    return const Center(
+                      child: Text('Error loading destinations'),
+                    );
+                  }
+
+                  if (destSnapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  List<DocumentSnapshot> destDocs =
+                      destSnapshot.data?.docs ?? [];
+                  List<String> destNames =
+                      destDocs.map((doc) => doc['name'] as String).toList();
+
+                  return TourCard(
+                    title: tour.title,
+                    subtitle: tour.subtitle,
+                    location: destNames.join(', '),
+                    price: '₱${tour.basePrice} / pax',
+                    isFavorite: false,
+                    imageUrl: tour.image,
+                    rating: 5.0,
+                    onFavorite: () {},
+                    onTap: () {
+                      GoRouter.of(context).push('/tour-details');
+                    },
+                  );
+                },
+              );
             },
           );
         },
@@ -370,31 +424,44 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildPopular(BuildContext context) {
-    List dummyMap = [
-      {
-        'destination': '🇯🇵 Japan',
-        'imageURL':
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNQXkHPjenNtb0rxeCdeb0uFdP1JqBGmFjFDtd3UVMQg&s'
-      },
-      {
-        'destination': '🇫🇷 Paris',
-        'imageURL':
-            'https://lp-cms-production.imgix.net/2021-05/shutterstockRF_1321418885.jpg?auto=format&fit=crop&ar=1:1&q=75&w=1200'
-      },
-    ];
-
     return _buildSection(
       context,
       title: 'Popular destinations',
-      child: _buildHorizontalList(
-        height: 200,
-        itemCount: dummyMap.length,
-        itemBuilder: (context, index) {
-          return DestinationCard(
-            name: dummyMap[index]['destination'],
-            imageUrl: dummyMap[index]['imageURL'],
-            onTap: () {
-              GoRouter.of(context).push('/tours-in-country');
+      child: StreamBuilder<QuerySnapshot>(
+        stream: _firestoreService.getPopularDestinations(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('Error loading destinations'),
+            );
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          List<DocumentSnapshot> destDocs = snapshot.data?.docs ?? [];
+          if (destDocs.isEmpty) {
+            return const Center(
+              child: Text('No destinations available'),
+            );
+          }
+
+          return _buildHorizontalList(
+            height: 150.0,
+            itemCount: destDocs.length,
+            itemBuilder: (context, index) {
+              Destination dest = destDocs[index].data() as Destination;
+
+              return DestinationCard(
+                name: dest.name,
+                imageUrl: dest.image,
+                onTap: () {
+                  GoRouter.of(context).push('/tours-in-country');
+                },
+              );
             },
           );
         },

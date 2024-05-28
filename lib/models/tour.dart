@@ -8,15 +8,17 @@ import 'theme.dart';
 
 class Tour {
   final String title, subtitle, image, airline, origin;
-  final List<Destination> destinations;
-  final List<String> tourScope, otherImages, overviewMarkdown;
+  final List destinations;
+  final List otherImages;
+  final String tourScope;
+  final String overviewMarkdown;
   final double basePrice;
   final int days, nights;
-  final List<Itenerary> itenerary;
-  final List<Theme> theme;
-  final List<TourHighlight> tourHighlights;
-  final List<Review> reviews;
-  final List<AvailableDates> availableDates;
+  final List itenerary;
+  final List theme;
+  final List tourHighlights;
+  final List reviews;
+  final List availableDates;
   final bool active;
 
   Tour({
@@ -40,32 +42,26 @@ class Tour {
     required this.title,
   });
 
-  factory Tour.fromFirestore(DocumentSnapshot doc) {
+  factory Tour.fromFirestore(Map<String, dynamic> doc) {
     return Tour(
-      airline: doc['airline'] as String,
-      basePrice: doc['base_price'] as double,
-      destinations: doc['destinations'] as List<Destination>,
-      days: doc['days'] as int,
-      image: doc['image'] as String,
-      itenerary: doc['itenerary'] as List<Itenerary>,
-      otherImages: doc['other_images'] as List<String>,
-      origin: doc['origin'] as String,
-      overviewMarkdown: doc['overviewMarkdown'] as List<String>,
-      reviews:
-          (doc['reviews'] as List).map((e) => Review.fromFirestore(e)).toList(),
-      subtitle: doc['subtitle'] as String,
-      availableDates: (doc['availableDates'] as List)
-          .map((e) => AvailableDates.fromFirestore(e))
-          .toList(),
-      theme: (List.from(doc['theme'] as List)
-          .map((e) => Theme.fromFirestore(e))).toList(),
-      tourHighlights: (doc['tourHighlights'] as List)
-          .map((e) => TourHighlight.fromFirestore(e))
-          .toList(),
-      tourScope: doc['tour_scope'] as List<String>,
-      active: doc['isActive'] as bool,
-      nights: doc['nights'] as int,
-      title: doc['title'] as String,
+      airline: doc['airline'] ?? "",
+      basePrice: doc['base_price'] + 0.0,
+      destinations: doc['destination'] ?? [],
+      days: doc['days'],
+      image: doc['image'],
+      itenerary: doc['itenerary'] ?? [],
+      otherImages: doc['other_images'] ?? [],
+      origin: doc['origin'],
+      overviewMarkdown: doc['overviewMarkdown'] ?? "",
+      reviews: doc['reviews'] ?? [],
+      subtitle: doc['subtitle'] ?? "",
+      availableDates: doc['availableDates'] ?? [],
+      theme: List.from(doc['theme']),
+      tourHighlights: doc['tourHighlights'] ?? [],
+      tourScope: doc['tour_scope'],
+      active: doc['isActive'] ?? true,
+      nights: doc['nights'],
+      title: doc['title'],
     );
   }
 
