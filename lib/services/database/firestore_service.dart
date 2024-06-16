@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:skywander_app/models/destination.dart';
 import 'package:skywander_app/models/tour.dart';
+import 'package:skywander_app/models/visa.dart';
 
 const String TOUR_COLLECTION = 'tour';
 const String DESTINATION_COLLECTION = 'destination';
+const String VISA_COUNTRIES_COLLECTION = 'visa';
 
 class FirestoreService {
   final FirebaseFirestore _database = FirebaseFirestore.instance;
@@ -13,6 +15,7 @@ class FirestoreService {
 
   late final CollectionReference _toursRef;
   late final CollectionReference _destinationsRef;
+  late final CollectionReference _visaCountriesRef;
 
   FirestoreService() {
     _toursRef = _database.collection(TOUR_COLLECTION).withConverter<Tour>(
@@ -26,6 +29,12 @@ class FirestoreService {
                   snapshots.data()!,
                 ),
             toFirestore: (destination, _) => destination.toJson());
+    _visaCountriesRef =
+        _database.collection(VISA_COUNTRIES_COLLECTION).withConverter<Visa>(
+            fromFirestore: (snapshots, _) => Visa.fromFirestore(
+                  snapshots.data()!,
+                ),
+            toFirestore: (visa, _) => visa.toJson());
   }
 
   /// Get all Tours
@@ -53,6 +62,13 @@ class FirestoreService {
         .snapshots();
   }
 
+  /// Get Destinations from a single reference
+  Stream<QuerySnapshot> getDestinationFromReference(DocumentReference ref) {
+    return _destinationsRef
+        .where(FieldPath.documentId, isEqualTo: ref)
+        .snapshots();
+  }
+
   /// Get Destinations filtering by the "popular" field
   Stream<QuerySnapshot> getPopularDestinations() {
     return _destinationsRef.where('popular', isEqualTo: true).snapshots();
@@ -61,5 +77,10 @@ class FirestoreService {
   /// Get all Destinations
   Stream<QuerySnapshot> getDestinations() {
     return _destinationsRef.snapshots();
+  }
+
+  /// Get all Visa Countries
+  Stream<QuerySnapshot> getVisaCountries() {
+    return _visaCountriesRef.snapshots();
   }
 }

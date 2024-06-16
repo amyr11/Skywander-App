@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skywander_app/models/destination.dart';
+import 'package:skywander_app/models/visa.dart';
+import 'package:skywander_app/services/database/firestore_service.dart';
 import 'package:skywander_app/styles.dart';
 import 'package:skywander_app/widgets/destination_card.dart';
 import 'package:skywander_app/widgets/visa_countries.dart';
@@ -12,38 +16,8 @@ class VisaScreen extends StatefulWidget {
 }
 
 class _VisaScreenState extends State<VisaScreen> {
-  List<Map<String, String>> dummyMap = [
-    {
-      'destination': '🇯🇵 Japan',
-      'imageURL':
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNQXkHPjenNtb0rxeCdeb0uFdP1JqBGmFjFDtd3UVMQg&s'
-    },
-    {
-      'destination': '🇫🇷 Paris',
-      'imageURL':
-          'https://lp-cms-production.imgix.net/2021-05/shutterstockRF_1321418885.jpg?auto=format&fit=crop&ar=1:1&q=75&w=1200'
-    },
-  ];
-
-  List<Map<String, String>> filteredCountries = [];
-  TextEditingController searchController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    filteredCountries = dummyMap;
-    searchController.addListener(_filterCountries);
-  }
-
-  void _filterCountries() {
-    setState(() {
-      filteredCountries = dummyMap
-          .where((country) => country['destination']!
-              .toLowerCase()
-              .contains(searchController.text.toLowerCase()))
-          .toList();
-    });
-  }
+  List<Map<dynamic, dynamic>> filteredCountries = [];
+  final FirestoreService _firestoreService = FirestoreService();
 
   @override
   Widget build(BuildContext context) {
@@ -54,44 +28,81 @@ class _VisaScreenState extends State<VisaScreen> {
       ),
       body: Column(
         children: [
-          SizedBox(height: kDefaultSpace),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: kDefaultSpace),
-            child: TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                fillColor: Theme.of(context).colorScheme.surfaceContainer,
-                prefixIcon: const Icon(Icons.search),
-                hintText: 'Search for countries',
-                hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: getTheme().colorScheme.secondary,
-                    ),
-                filled: true,
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24.0),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: kDefaultSpace),
           Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: kDefaultSpace),
-              itemCount: filteredCountries.length,
-              itemBuilder: (context, index) {
-                final country = filteredCountries[index];
-                return SizedBox(
-                  height: 150,
-                  child: DestinationCard(
-                    name: country['destination']!,
-                    imageUrl: country['imageURL']!,
-                    onTap: () {
-                      GoRouter.of(context).push('/visa-details');
-                    },
-                  ),
+            child: StreamBuilder<QuerySnapshot>(
+              stream: _firestoreService.getVisaCountries(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text('An error occurred. Please try again later.'),
+                  );
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                List<DocumentSnapshot> visaCountriesDocs =
+                    snapshot.data?.docs ?? [];
+
+                if (visaCountriesDocs.isEmpty) {
+                  return const Center(
+                    child: Text('No countries found.'),
+                  );
+                }
+
+                return ListView.builder(
+                  itemCount: visaCountriesDocs.length,
+                  itemBuilder: (context, index) {
+                    Visa visaCountry = visaCountriesDocs[index].data() as Visa;
+
+                    return FutureBuilder<QuerySnapshot>(
+                      future: _firestoreService
+                          .getDestinationFromReference(
+                            visaCountry.destination,
+                          )
+                          .first,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const Center(
+                            child: Text(
+                                'An error occurred. Please try again later.'),
+                          );
+                        }
+
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        List<DocumentSnapshot> destinationDocs =
+                            snapshot.data?.docs ?? [];
+
+                        if (destinationDocs.isEmpty) {
+                          return const Center(
+                            child: Text('No destinations found.'),
+                          );
+                        }
+
+                        Destination destination =
+                            snapshot.data!.docs.first.data() as Destination;
+
+                        return DestinationCard(
+                          name: destination.name,
+                          imageUrl: destination.image,
+                          onTap: () {
+                            GoRouter.of(context).push(
+                              '/visa-details',
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
                 );
               },
             ),
